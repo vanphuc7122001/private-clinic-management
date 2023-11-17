@@ -1,0 +1,46 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "he thong quan ly phong kham tu nhan ",
+  "main": "index.js",
+  "scripts": {
+    "migrate:mysql": "dotenv -e .env.development -- npx prisma migrate dev",
+    "pull:mysql": "dotenv -e .env.development -- npx prisma db pull",
+    "push:mysql": "dotenv -e .env.development -- npx prisma db push",
+    "dev": "NODE_ENV=development npx nodemon",
+    "dev:stag": "NODE_ENV=staging npx nodemon",
+    "dev:prod": "NODE_ENV=production npx nodemon",
+    "build": "rimraf ./dist && tsc && tsc-alias",
+    "start:dev": "NODE_ENV=development node dist/index.js",
+    "start:stag": "NODE_ENV=staging node dist/index.js",
+    "start:prod": "NODE_ENV=production node dist/index.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prettier": "prettier --check .",
+    "prettier:fix": "prettier --write ."
+  },
+  "author": "Dang Van Phuc",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.9.0",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
+    "eslint": "^8.53.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "nodemon": "^3.0.1",
+    "prettier": "^3.0.3",
+    "prisma": "^5.6.0",
+    "rimraf": "^5.0.5",
+    "ts-node": "^10.9.1",
+    "tsc-alias": "^1.8.8",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.6.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
+  }
+}

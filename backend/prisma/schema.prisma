@@ -1,0 +1,207 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  id        String   @id @default(uuid())
+  name      String
+  users     User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("roles")
+}
+
+model User {
+  id                    String  @id @default(uuid())
+  name                  String
+  gender                String
+  avatar                String
+  address               String
+  phone                 String
+  email                 String
+  password              String
+  is_patient            Boolean @default(false)
+  forgot_password_token String  @db.Text
+  roleId                Role    @relation(fields: [role_id], references: [id])
+
+  role_id                String
+  createdAt              DateTime         @default(now())
+  updatedAt              DateTime         @updatedAt
+  refresh_token          RefreshToken[]
+  medical_record_doctor  MedicalRecord[]  @relation("medical_records_doctor")
+  medical_record_patient MedicalRecord[]  @relation("medical_records_patient")
+  post                   Post[]
+  appointment_doctor     Appointment[]    @relation("appointment_doctor")
+  appointment_patient    Appointment[]    @relation("appointment_patient")
+  staff_schedule         StaffSchedules[] @relation("staff_schedules")
+  doctor_profile         DoctorProfile?   @relation("doctor_profiles")
+  bill_doctor            Bill[]           @relation("bill_doctor")
+  bill_patient           Bill[]           @relation("bill_patient")
+  prescription_doctor    Prescriptions[]  @relation("prescription_doctor")
+  prescription_patient   Prescriptions[]  @relation("prescription_patient")
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @db.Text
+  userId    User     @relation(fields: [user_id], references: [id])
+  user_id   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("refresh_tokens")
+}
+
+model MedicalRecord {
+  id         String @id @default(uuid())
+  diagnosis  String
+  note       String
+  doctor_id  String
+  patient_id String
+
+  doctorId  User     @relation(name: "medical_records_doctor", fields: [doctor_id], references: [id])
+  patientId User     @relation(name: "medical_records_patient", fields: [patient_id], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("medical_records")
+}
+
+model Post {
+  id          String @id @default(uuid())
+  title       String
+  images      String
+  description String @db.Text
+  content     String
+  user_id     String
+
+  userId    User     @relation(fields: [user_id], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("posts")
+}
+
+model Appointment {
+  id         String   @id @default(uuid())
+  date       DateTime
+  doctor_id  String
+  patient_id String
+
+  patientId     User           @relation(name: "appointment_patient", fields: [patient_id], references: [id])
+  doctorId      User           @relation(name: "appointment_doctor", fields: [doctor_id], references: [id])
+  bill          Bill?          @relation("bill_appointment")
+  Prescriptions Prescriptions? @relation("prescription_appointment")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@map("appointments")
+}
+
+model StaffSchedules {
+  id      String   @id @default(uuid())
+  date    DateTime @db.Date
+  user_id String
+  shift   String
+  note    String
+
+  userId    User     @relation(name: "staff_schedules", fields: [user_id], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("staff_schedules")
+}
+
+model Specializations {
+  id   String @id @default(uuid())
+  name String
+
+  DoctorProfile DoctorProfile? @relation("doctor_profiles")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@map("specializations")
+}
+
+model DoctorProfile {
+  doctor_id         String @unique
+  specialization_id String @unique
+  certification     String
+  expricence        String
+
+  specializationId Specializations @relation(name: "doctor_profiles", fields: [specialization_id], references: [id])
+  doctorId         User            @relation(name: "doctor_profiles", fields: [doctor_id], references: [id])
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  @@id([doctor_id])
+  @@map("doctor_profiles")
+}
+
+model Bill {
+  id             String @id @default(uuid())
+  doctor_id      String
+  patient_id     String
+  appointment_id String @unique
+  amount         String
+
+  doctorId      User        @relation(name: "bill_doctor", fields: [doctor_id], references: [id])
+  patientId     User        @relation(name: "bill_patient", fields: [patient_id], references: [id])
+  appointmentId Appointment @relation(name: "bill_appointment", fields: [appointment_id], references: [id])
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@map("bills")
+}
+
+model Prescriptions {
+  id             String   @id @default(uuid())
+  date           DateTime @db.Date
+  doctor_id      String
+  patient_id     String
+  appointment_id String   @unique
+
+  doctorId             User                  @relation(name: "prescription_doctor", fields: [doctor_id], references: [id])
+  patientId            User                  @relation(name: "prescription_patient", fields: [patient_id], references: [id])
+  appointmentId        Appointment           @relation(name: "prescription_appointment", fields: [appointment_id], references: [id])
+  prescriptions_detail PrescriptionsDetail[] @relation("prescriptions_detail's")
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+
+  @@map("prescriptions")
+}
+
+model Medicines {
+  id           String @id @default(uuid())
+  name         String
+  manufacturer String
+  usage        String
+  quantity     String
+  price        String
+
+  prescriptions_detail_medicine PrescriptionsDetail[] @relation("prescriptions_detail_medicine")
+  createdAt                     DateTime              @default(now())
+  updatedAt                     DateTime              @updatedAt
+
+  @@map("medicines")
+}
+
+model PrescriptionsDetail {
+  prescription_id String
+  medicine_id     String
+  prescriptionsId Prescriptions @relation(name: "prescriptions_detail's", fields: [prescription_id], references: [id])
+  medicinesId     Medicines     @relation(name: "prescriptions_detail_medicine", fields: [medicine_id], references: [id])
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@id([prescription_id, medicine_id])
+  @@map("prescription_details")
+}
