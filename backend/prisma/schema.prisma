@@ -197,6 +197,8 @@ model Medicines {
 model PrescriptionsDetail {
   prescription_id String
   medicine_id     String
+  dosage          String
+
   prescriptionsId Prescriptions @relation(name: "prescriptions_detail's", fields: [prescription_id], references: [id])
   medicinesId     Medicines     @relation(name: "prescriptions_detail_medicine", fields: [medicine_id], references: [id])
   createdAt       DateTime      @default(now())
