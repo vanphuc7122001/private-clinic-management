@@ -5,6 +5,7 @@ import databaseService from './services/database.service'
 import express from 'express'
 import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
+import { defaultErrorHandler } from './middlewares/error.middlewares'
 
 const app = express()
 
@@ -31,6 +32,10 @@ initRoutes('/api/v1', app)
 // check connect database
 databaseService.Connect()
 
+// error handler
+app.use(defaultErrorHandler)
+
+// Running server
 app.listen(port, () => {
   console.log(`Serving running on ${port}`)
 })
