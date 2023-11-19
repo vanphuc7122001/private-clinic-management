@@ -23,5 +23,10 @@ export const USER_MESSAGES = {
   ROLE_ID_IS_REQUIRED: 'Role ID is required',
   ROLE_ID_MUST_BE_A_STRING: 'Role ID must be a string',
   AVATAR_MUST_BE_STRING: 'Avatar must be a string',
-  ROLE_NOT_FOUND: 'Role not found'
+  ROLE_NOT_FOUND: 'Role not found',
+  EMAIL_ALREADY_EXIST: 'Email already exists',
+  CONFIRM_PASSWORD_MUST_EQUAL_PASSWORD: 'Password must be equal to the password',
+  LOGIN_SUCCESS: 'Login succeeded',
+  EMAIL_OR_PASSWORD_INCORRECT: 'Email or password incorrect',
+  EMAIL_IS_REQUIRED: 'Email is required'
 } as const

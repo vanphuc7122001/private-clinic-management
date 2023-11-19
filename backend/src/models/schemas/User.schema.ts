@@ -1,3 +1,5 @@
+import { ObjectId } from '~/utils/commons'
+
 interface UserType {
   id?: string
   name: string
@@ -31,7 +33,7 @@ export default class User {
 
   constructor(user: UserType) {
     const date = new Date()
-    this.id = user.id
+    this.id = user.id || ObjectId()
     this.name = user.name
     this.avatar = user.avatar
     this.address = user.address

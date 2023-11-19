@@ -26,25 +26,25 @@ model User {
   phone                 String  @db.VarChar(20)
   email                 String? @unique @db.VarChar(100)
   password              String? @db.VarChar(200)
-  is_patient            Boolean @default(false)
+  is_patient            Boolean @default(true)
   forgot_password_token String? @db.Text
-  roleId                Role    @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  roles                 Role    @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  role_id                String
-  created_at             DateTime         @default(now())
-  updated_at             DateTime         @updatedAt
-  refresh_token          RefreshToken[]
-  medical_record_doctor  MedicalRecord[]  @relation("medical_records_doctor")
-  medical_record_patient MedicalRecord[]  @relation("medical_records_patient")
-  post                   Post[]
-  appointment_doctor     Appointment[]    @relation("appointment_doctor")
-  appointment_patient    Appointment[]    @relation("appointment_patient")
-  staff_schedule         StaffSchedules[] @relation("staff_schedules")
-  doctor_profile         DoctorProfile?   @relation("doctor_profiles")
-  bill_doctor            Bill[]           @relation("bill_doctor")
-  bill_patient           Bill[]           @relation("bill_patient")
-  prescription_doctor    Prescriptions[]  @relation("prescription_doctor")
-  prescription_patient   Prescriptions[]  @relation("prescription_patient")
+  role_id              String
+  created_at           DateTime         @default(now())
+  updated_at           DateTime         @updatedAt
+  refresh_token        RefreshToken[]
+  medicalRecordDoctor  MedicalRecord[]  @relation("medical_records_doctor")
+  medicalRecordPatient MedicalRecord[]  @relation("medical_records_patient")
+  post                 Post[]
+  appointmentDoctor    Appointment[]    @relation("appointment_doctor")
+  appointmentPatient   Appointment[]    @relation("appointment_patient")
+  staffSchedule        StaffSchedules[] @relation("staff_schedules")
+  doctorProfile        DoctorProfile?   @relation("doctor_profiles")
+  billDoctor           Bill[]           @relation("bill_doctor")
+  billPatient          Bill[]           @relation("bill_patient")
+  prescriptionDoctor   Prescriptions[]  @relation("prescription_doctor")
+  prescriptionPatient  Prescriptions[]  @relation("prescription_patient")
 
   @@map("users")
 }
@@ -52,8 +52,10 @@ model User {
 model RefreshToken {
   id         String   @id @default(uuid())
   token      String   @db.Text
-  userId     User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user_id    String   @db.VarChar(200)
+  exp        DateTime
+  iat        DateTime
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
@@ -67,8 +69,8 @@ model MedicalRecord {
   doctor_id  String @db.VarChar(200)
   patient_id String @db.VarChar(200)
 
-  doctorId   User     @relation(name: "medical_records_doctor", fields: [doctor_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  patientId  User     @relation(name: "medical_records_patient", fields: [patient_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  doctor     User     @relation(name: "medical_records_doctor", fields: [doctor_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  patient    User     @relation(name: "medical_records_patient", fields: [patient_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
@@ -83,7 +85,7 @@ model Post {
   content     String @db.Text
   user_id     String @db.VarChar(200)
 
-  userId     User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
@@ -91,17 +93,17 @@ model Post {
 }
 
 model Appointment {
-  id                       String         @id @default(uuid())
-  date                     DateTime
-  doctor_id                String         @db.VarChar(200)
-  patient_id               String         @db.VarChar(200)
-  status                   String
-  patientId                User           @relation(name: "appointment_patient", fields: [patient_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  doctorId                 User           @relation(name: "appointment_doctor", fields: [doctor_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  bill                     Bill?          @relation("bill_appointment")
-  prescription_appointment Prescriptions? @relation("prescription_appointment")
-  created_at               DateTime       @default(now())
-  updated_at               DateTime       @updatedAt
+  id                      String         @id @default(uuid())
+  date                    DateTime
+  doctor_id               String         @db.VarChar(200)
+  patient_id              String         @db.VarChar(200)
+  status                  String
+  patient                 User           @relation(name: "appointment_patient", fields: [patient_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  doctor                  User           @relation(name: "appointment_doctor", fields: [doctor_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  bill                    Bill?          @relation("bill_appointment")
+  prescriptionAppointment Prescriptions? @relation("prescription_appointment")
+  created_at              DateTime       @default(now())
+  updated_at              DateTime       @updatedAt
 
   @@map("appointments")
 }
@@ -113,7 +115,7 @@ model StaffSchedules {
   shift   String   @db.VarChar(200)
   note    String?  @db.VarChar(200)
 
-  userId     User     @relation(name: "staff_schedules", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user       User     @relation(name: "staff_schedules", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
@@ -124,9 +126,9 @@ model Specializations {
   id   String @id @default(uuid())
   name String @db.VarChar(100)
 
-  doctor_profiles DoctorProfile? @relation("doctor_profiles")
-  created_at      DateTime       @default(now())
-  updated_at      DateTime       @updatedAt
+  doctorProfiles DoctorProfile? @relation("doctor_profiles")
+  created_at     DateTime       @default(now())
+  updated_at     DateTime       @updatedAt
 
   @@map("specializations")
 }
@@ -137,10 +139,10 @@ model DoctorProfile {
   certification     String @db.VarChar(200)
   expricence        String @db.VarChar(200)
 
-  specializationId Specializations @relation(name: "doctor_profiles", fields: [specialization_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  doctorId         User            @relation(name: "doctor_profiles", fields: [doctor_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  created_at       DateTime        @default(now())
-  updated_at       DateTime        @updatedAt
+  specialization Specializations @relation(name: "doctor_profiles", fields: [specialization_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  doctor         User            @relation(name: "doctor_profiles", fields: [doctor_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  created_at     DateTime        @default(now())
+  updated_at     DateTime        @updatedAt
 
   @@id([doctor_id])
   @@map("doctor_profiles")
@@ -153,11 +155,11 @@ model Bill {
   appointment_id String @unique @db.VarChar(200)
   amount         String @db.VarChar(200)
 
-  doctorId      User        @relation(name: "bill_doctor", fields: [doctor_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  patientId     User        @relation(name: "bill_patient", fields: [patient_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  appointmentId Appointment @relation(name: "bill_appointment", fields: [appointment_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  created_at    DateTime    @default(now())
-  updated_at    DateTime    @updatedAt
+  doctor      User        @relation(name: "bill_doctor", fields: [doctor_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  patient     User        @relation(name: "bill_patient", fields: [patient_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  appointment Appointment @relation(name: "bill_appointment", fields: [appointment_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
 
   @@map("bills")
 }
@@ -169,12 +171,12 @@ model Prescriptions {
   patient_id     String   @db.VarChar(200)
   appointment_id String   @unique @db.VarChar(200)
 
-  doctorId             User                  @relation(name: "prescription_doctor", fields: [doctor_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  patientId            User                  @relation(name: "prescription_patient", fields: [patient_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  appointmentId        Appointment           @relation(name: "prescription_appointment", fields: [appointment_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  prescriptions_detail PrescriptionsDetail[] @relation("prescriptions_detail's")
-  created_at           DateTime              @default(now())
-  updated_at           DateTime              @updatedAt
+  doctor              User                  @relation(name: "prescription_doctor", fields: [doctor_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  patient             User                  @relation(name: "prescription_patient", fields: [patient_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  appointment         Appointment           @relation(name: "prescription_appointment", fields: [appointment_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  prescriptionsDetail PrescriptionsDetail[] @relation("prescriptions_detail's")
+  created_at          DateTime              @default(now())
+  updated_at          DateTime              @updatedAt
 
   @@map("prescriptions")
 }
@@ -187,9 +189,9 @@ model Medicines {
   quantity     String @db.VarChar(200)
   price        String @db.VarChar(200)
 
-  prescriptions_detail_medicine PrescriptionsDetail[] @relation("prescriptions_detail_medicine")
-  created_at                    DateTime              @default(now())
-  updated_at                    DateTime              @updatedAt
+  prescriptionsDetailMedicine PrescriptionsDetail[] @relation("prescriptions_detail_medicine")
+  created_at                  DateTime              @default(now())
+  updated_at                  DateTime              @updatedAt
 
   @@map("medicines")
 }
@@ -199,10 +201,10 @@ model PrescriptionsDetail {
   medicine_id     String @db.VarChar(200)
   dosage          String @db.VarChar(200)
 
-  prescriptionsId Prescriptions @relation(name: "prescriptions_detail's", fields: [prescription_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  medicinesId     Medicines     @relation(name: "prescriptions_detail_medicine", fields: [medicine_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  created_at      DateTime      @default(now())
-  updated_at      DateTime      @updatedAt
+  prescriptions Prescriptions @relation(name: "prescriptions_detail's", fields: [prescription_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  medicines     Medicines     @relation(name: "prescriptions_detail_medicine", fields: [medicine_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  created_at    DateTime      @default(now())
+  updated_at    DateTime      @updatedAt
 
   @@id([prescription_id, medicine_id])
   @@map("prescription_details")

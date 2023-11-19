@@ -5,6 +5,10 @@ import { isLength } from './common.middlewares'
 import { stringEnumToArray } from '~/utils/commons'
 import { Genders } from '~/constants/enum'
 import databaseService from '~/services/database.service'
+import { hashPassword } from '~/utils/crypto'
+import { ErrorWithStatus } from '~/models/Errors'
+import HTTP_STATUS from '~/constants/httpStatus'
+import { USER_EMAIL_REGEX } from '~/constants/regex'
 
 const genderType = stringEnumToArray(Genders)
 
@@ -82,12 +86,35 @@ export const registerValidator = validate(
         isEmail: {
           errorMessage: USER_MESSAGES.EMAIL_IS_INVALID
         },
-        trim: true
+        trim: true,
+        custom: {
+          options: async (value) => {
+            const email = await databaseService.users.findFirst({ where: { email: value } })
+            if (email) {
+              throw new Error(USER_MESSAGES.EMAIL_ALREADY_EXIST)
+            }
+
+            return true
+          }
+        }
       },
       password: {
         ...passwordSchema,
         optional: true,
         notEmpty: undefined
+      },
+      confirm_password: {
+        ...passwordSchema,
+        optional: true,
+        custom: {
+          options: (value, { req }) => {
+            if (value !== req.body.password) {
+              throw new Error(USER_MESSAGES.CONFIRM_PASSWORD_MUST_EQUAL_PASSWORD)
+            }
+
+            return true
+          }
+        }
       },
       is_patient: {
         optional: true,
@@ -103,14 +130,59 @@ export const registerValidator = validate(
           errorMessage: USER_MESSAGES.ROLE_ID_MUST_BE_A_STRING
         },
         custom: {
-          options: (value) => {
-            const role = databaseService.roles.findFirst({ where: { id: value } })
+          options: async (value) => {
+            const role = await databaseService.roles.findFirst({ where: { id: value } })
             if (!role) {
               throw new Error(USER_MESSAGES.ROLE_NOT_FOUND)
             }
             return true
           }
         }
+      }
+    },
+    ['body']
+  )
+)
+
+export const loginValidator = validate(
+  checkSchema(
+    {
+      email: {
+        trim: true,
+        custom: {
+          options: async (value, { req }) => {
+            if (!value) {
+              throw new Error(USER_MESSAGES.EMAIL_IS_REQUIRED)
+            }
+
+            if (!USER_EMAIL_REGEX.test(value)) {
+              throw new Error(USER_MESSAGES.EMAIL_IS_INVALID)
+            }
+
+            const password = req.body.password
+            const user = await databaseService.users.findFirst({
+              where: {
+                email: value,
+                password: hashPassword(password)
+              }
+            })
+
+            if (!user) {
+              throw new ErrorWithStatus({
+                message: USER_MESSAGES.EMAIL_OR_PASSWORD_INCORRECT,
+                status: HTTP_STATUS.NOT_FOUND
+              })
+            }
+
+            return true
+          }
+        }
+      },
+      password: {
+        notEmpty: {
+          errorMessage: new Error(USER_MESSAGES.PASSWORD_IS_REQUIRED)
+        },
+        trim: true
       }
     },
     ['body']

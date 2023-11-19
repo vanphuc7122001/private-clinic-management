@@ -2,13 +2,14 @@ import { RegisterReqBody, TokenPayload } from '~/models/requests/User.requests'
 import databaseService from './database.service'
 import { hashPassword } from '~/utils/crypto'
 import User from '~/models/schemas/User.schema'
-import { signToken } from '~/utils/jwt'
+import { signToken, verifyToken } from '~/utils/jwt'
 import { Roles, TokenType } from '~/constants/enum'
 import { envConfig } from '~/constants/config'
+import RefreshToken from '~/models/schemas/RefreshToken.schema'
 
 interface PayloadToken {
   user_id: string
-  role: Roles
+  role: string
   is_patient: boolean
   exp?: number
 }
@@ -69,8 +70,11 @@ class UserService {
     })
   }
 
-  private signAccessAndRefreshToken({ user_id, verify }: PayloadToken) {
-    return Promise.all([this.signAccessToken({ user_id, verify }), this.signRefreshToken({ user_id, verify })])
+  private signAccessAndRefreshToken({ user_id, is_patient, role }: PayloadToken) {
+    return Promise.all([
+      this.signAccessToken({ user_id, is_patient, role }),
+      this.signRefreshToken({ user_id, is_patient, role })
+    ])
   }
 
   private decodeRefreshToken(refresh_token: string) {
@@ -79,6 +83,7 @@ class UserService {
       secretOrPublicKey: envConfig.jwtSecretRefreshToken
     })
   }
+
   async register(payload: RegisterReqBody) {
     const password = payload.password ? hashPassword(payload.password) : undefined
     const [user, role] = await Promise.all([
@@ -98,6 +103,61 @@ class UserService {
         }
       })
     ])
+
+    const { is_patient, id: user_id } = user
+    const name = role?.name as string
+
+    const [access_token, refresh_token] = await this.signAccessAndRefreshToken({
+      is_patient: is_patient,
+      user_id,
+      role: name
+    })
+
+    const { exp, iat } = await this.decodeRefreshToken(refresh_token)
+
+    await databaseService.refreshTokens.create({
+      data: new RefreshToken({ exp, iat, token: refresh_token, user_id })
+    })
+
+    return {
+      access_token,
+      refresh_token
+    }
+  }
+
+  async login(email: string, password: string) {
+    const user = await databaseService.users.findFirstOrThrow({
+      where: {
+        email: email
+      },
+      select: {
+        is_patient: true,
+        id: true,
+        roles: {
+          select: {
+            name: true
+          }
+        }
+      }
+    })
+
+    const { id: user_id, is_patient, roles } = user
+
+    const [access_token, refresh_token] = await this.signAccessAndRefreshToken({
+      is_patient,
+      user_id,
+      role: roles.name
+    })
+
+    const { iat, exp } = await this.decodeRefreshToken(refresh_token)
+
+    await databaseService.refreshTokens.create({
+      data: new RefreshToken({ exp, iat, token: refresh_token, user_id })
+    })
+    return {
+      access_token,
+      refresh_token
+    }
   }
 }
 
