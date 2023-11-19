@@ -7,16 +7,6 @@ import databaseService from '~/services/database.service'
 
 const roleTypes = stringEnumToArray(Roles)
 
-const isLength = ({ name, field, min, max }: { name: string; field: string; min: number; max: number }) => {
-  return {
-    options: {
-      min,
-      max
-    },
-    errorMessage: `The ${field} ${name} must have a length between ${min} and ${max}`
-  }
-}
-
 export const createRoleValidator = validate(
   checkSchema(
     {

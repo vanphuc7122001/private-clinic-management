@@ -3,7 +3,12 @@ import databaseService from './database.service'
 
 class RoleService {
   async getRoles() {
-    const roles = await databaseService.roles.findMany()
+    const roles = await databaseService.roles.findMany({
+      select: {
+        name: true,
+        id: true
+      }
+    })
     return roles
   }
 

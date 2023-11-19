@@ -19,7 +19,6 @@ roleRouters.get('/', wrapRequestHandler(getRolesController))
  * Method: POST
  * Body : {name: string}
  */
-
 roleRouters.post('/', createRoleValidator, wrapRequestHandler(createRoleController))
 
 export default roleRouters

@@ -1,11 +1,13 @@
 import { envConfig } from './constants/config'
 import { initRoutes } from './routes'
+import { defaultErrorHandler } from './middlewares/error.middlewares'
+
 import cors, { CorsOptions } from 'cors'
 import databaseService from './services/database.service'
 import express from 'express'
 import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
-import { defaultErrorHandler } from './middlewares/error.middlewares'
+import morgan from 'morgan'
 
 const app = express()
 
@@ -26,6 +28,7 @@ app.use(helmet())
 app.use(cors(corsOptions))
 app.use(limiter)
 app.use(express.json())
+app.use(morgan('dev'))
 
 //inital routes
 initRoutes('/api/v1', app)
