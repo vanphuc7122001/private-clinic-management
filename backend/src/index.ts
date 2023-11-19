@@ -25,6 +25,7 @@ const limiter = rateLimit({
 app.use(helmet())
 app.use(cors(corsOptions))
 app.use(limiter)
+app.use(express.json())
 
 //inital routes
 initRoutes('/api/v1', app)

@@ -9,7 +9,7 @@ datasource db {
 
 model Role {
   id         String   @id @default(uuid())
-  name       String
+  name       String   @unique
   users      User[]
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -19,20 +19,20 @@ model Role {
 
 model User {
   id                    String  @id @default(uuid())
-  name                  String
-  gender                String
-  avatar                String
-  address               String
-  phone                 String
-  email                 String
-  password              String
+  name                  String  @db.VarChar(100)
+  gender                String  @db.VarChar(20)
+  avatar                String  @db.VarChar(200)
+  address               String  @db.VarChar(200)
+  phone                 String  @db.VarChar(20)
+  email                 String? @unique @db.VarChar(100)
+  password              String? @db.VarChar(200)
   is_patient            Boolean @default(false)
   forgot_password_token String  @db.Text
   roleId                Role    @relation(fields: [role_id], references: [id])
 
   role_id                String
   created_at             DateTime         @default(now())
-  updatedAt              DateTime         @updatedAt
+  updated_at             DateTime         @updatedAt
   refresh_token          RefreshToken[]
   medical_record_doctor  MedicalRecord[]  @relation("medical_records_doctor")
   medical_record_patient MedicalRecord[]  @relation("medical_records_patient")
@@ -53,7 +53,7 @@ model RefreshToken {
   id         String   @id @default(uuid())
   token      String   @db.Text
   userId     User     @relation(fields: [user_id], references: [id])
-  user_id    String
+  user_id    String   @db.VarChar(200)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
@@ -62,10 +62,10 @@ model RefreshToken {
 
 model MedicalRecord {
   id         String @id @default(uuid())
-  diagnosis  String
-  note       String
-  doctor_id  String
-  patient_id String
+  diagnosis  String @db.VarChar(1000)
+  note       String @db.VarChar(1000)
+  doctor_id  String @db.VarChar(200)
+  patient_id String @db.VarChar(200)
 
   doctorId   User     @relation(name: "medical_records_doctor", fields: [doctor_id], references: [id])
   patientId  User     @relation(name: "medical_records_patient", fields: [patient_id], references: [id])
@@ -77,11 +77,11 @@ model MedicalRecord {
 
 model Post {
   id          String @id @default(uuid())
-  title       String
-  images      String
+  title       String @db.VarChar(200)
+  images      String @db.VarChar(200)
   description String @db.Text
-  content     String
-  user_id     String
+  content     String @db.Text
+  user_id     String @db.VarChar(200)
 
   userId     User     @relation(fields: [user_id], references: [id])
   created_at DateTime @default(now())
@@ -93,15 +93,15 @@ model Post {
 model Appointment {
   id         String   @id @default(uuid())
   date       DateTime
-  doctor_id  String
-  patient_id String
+  doctor_id  String   @db.VarChar(200)
+  patient_id String   @db.VarChar(200)
 
-  patientId     User           @relation(name: "appointment_patient", fields: [patient_id], references: [id])
-  doctorId      User           @relation(name: "appointment_doctor", fields: [doctor_id], references: [id])
-  bill          Bill?          @relation("bill_appointment")
-  Prescriptions Prescriptions? @relation("prescription_appointment")
-  created_at    DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  patientId                User           @relation(name: "appointment_patient", fields: [patient_id], references: [id])
+  doctorId                 User           @relation(name: "appointment_doctor", fields: [doctor_id], references: [id])
+  bill                     Bill?          @relation("bill_appointment")
+  prescription_appointment Prescriptions? @relation("prescription_appointment")
+  created_at               DateTime       @default(now())
+  updated_at               DateTime       @updatedAt
 
   @@map("appointments")
 }
@@ -109,9 +109,9 @@ model Appointment {
 model StaffSchedules {
   id      String   @id @default(uuid())
   date    DateTime @db.Date
-  user_id String
-  shift   String
-  note    String
+  user_id String   @db.VarChar(200)
+  shift   String   @db.VarChar(200)
+  note    String?  @db.VarChar(200)
 
   userId     User     @relation(name: "staff_schedules", fields: [user_id], references: [id])
   created_at DateTime @default(now())
@@ -122,25 +122,25 @@ model StaffSchedules {
 
 model Specializations {
   id   String @id @default(uuid())
-  name String
+  name String @db.VarChar(100)
 
-  DoctorProfile DoctorProfile? @relation("doctor_profiles")
-  created_at    DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  doctor_profiles DoctorProfile? @relation("doctor_profiles")
+  created_at      DateTime       @default(now())
+  updated_at      DateTime       @updatedAt
 
   @@map("specializations")
 }
 
 model DoctorProfile {
-  doctor_id         String @unique
-  specialization_id String @unique
-  certification     String
-  expricence        String
+  doctor_id         String @unique @db.VarChar(200)
+  specialization_id String @unique @db.VarChar(200)
+  certification     String @db.VarChar(200)
+  expricence        String @db.VarChar(200)
 
   specializationId Specializations @relation(name: "doctor_profiles", fields: [specialization_id], references: [id])
   doctorId         User            @relation(name: "doctor_profiles", fields: [doctor_id], references: [id])
   created_at       DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
+  updated_at       DateTime        @updatedAt
 
   @@id([doctor_id])
   @@map("doctor_profiles")
@@ -148,16 +148,16 @@ model DoctorProfile {
 
 model Bill {
   id             String @id @default(uuid())
-  doctor_id      String
-  patient_id     String
-  appointment_id String @unique
-  amount         String
+  doctor_id      String @db.VarChar(200)
+  patient_id     String @db.VarChar(200)
+  appointment_id String @unique @db.VarChar(200)
+  amount         String @db.VarChar(200)
 
   doctorId      User        @relation(name: "bill_doctor", fields: [doctor_id], references: [id])
   patientId     User        @relation(name: "bill_patient", fields: [patient_id], references: [id])
   appointmentId Appointment @relation(name: "bill_appointment", fields: [appointment_id], references: [id])
   created_at    DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  updated_at    DateTime    @updatedAt
 
   @@map("bills")
 }
@@ -165,44 +165,44 @@ model Bill {
 model Prescriptions {
   id             String   @id @default(uuid())
   date           DateTime @db.Date
-  doctor_id      String
-  patient_id     String
-  appointment_id String   @unique
+  doctor_id      String   @db.VarChar(200)
+  patient_id     String   @db.VarChar(200)
+  appointment_id String   @unique @db.VarChar(200)
 
   doctorId             User                  @relation(name: "prescription_doctor", fields: [doctor_id], references: [id])
   patientId            User                  @relation(name: "prescription_patient", fields: [patient_id], references: [id])
   appointmentId        Appointment           @relation(name: "prescription_appointment", fields: [appointment_id], references: [id])
   prescriptions_detail PrescriptionsDetail[] @relation("prescriptions_detail's")
   created_at           DateTime              @default(now())
-  updatedAt            DateTime              @updatedAt
+  updated_at           DateTime              @updatedAt
 
   @@map("prescriptions")
 }
 
 model Medicines {
   id           String @id @default(uuid())
-  name         String
-  manufacturer String
-  usage        String
-  quantity     String
-  price        String
+  name         String @db.VarChar(200)
+  manufacturer String @db.VarChar(200)
+  usage        String @db.VarChar(200)
+  quantity     String @db.VarChar(200)
+  price        String @db.VarChar(200)
 
   prescriptions_detail_medicine PrescriptionsDetail[] @relation("prescriptions_detail_medicine")
   created_at                    DateTime              @default(now())
-  updatedAt                     DateTime              @updatedAt
+  updated_at                    DateTime              @updatedAt
 
   @@map("medicines")
 }
 
 model PrescriptionsDetail {
-  prescription_id String
-  medicine_id     String
-  dosage          String
+  prescription_id String @db.VarChar(200)
+  medicine_id     String @db.VarChar(200)
+  dosage          String @db.VarChar(200)
 
   prescriptionsId Prescriptions @relation(name: "prescriptions_detail's", fields: [prescription_id], references: [id])
   medicinesId     Medicines     @relation(name: "prescriptions_detail_medicine", fields: [medicine_id], references: [id])
   created_at      DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  updated_at      DateTime      @updatedAt
 
   @@id([prescription_id, medicine_id])
   @@map("prescription_details")

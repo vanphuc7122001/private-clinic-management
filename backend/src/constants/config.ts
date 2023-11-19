@@ -5,15 +5,17 @@ const env = process.env.NODE_ENV
 const envFilename = `.env.${env}`
 
 if (!env) {
-  console.log(`Bạn chưa cung cấp biến môi trường NODE_ENV (ví dụ: development, production)`)
-  console.log(`Phát hiện NODE_ENV = ${env}`)
+  console.log(`You haven't provided a NODE_ENV environment variable (e.g. development, production)`)
+  console.log(`Detect NODE_ENV = ${env}`)
   process.exit(1)
 }
-console.log(`Phát hiện NODE_ENV = ${env}, vì thế app sẽ dùng file môi trường là ${envFilename}`)
+console.log(`Detect NODE_ENV = ${env}, So the app will use the environment file ${envFilename}`)
 if (!fs.existsSync(path.resolve(envFilename))) {
-  console.log(`Không tìm thấy file môi trường ${envFilename}`)
-  console.log(`Lưu ý: App không dùng file .env, ví dụ môi trường là development thì app sẽ dùng file .env.development`)
-  console.log(`Vui lòng tạo file ${envFilename} và tham khảo nội dung ở file .env.example`)
+  console.log(`No environment file found ${envFilename}`)
+  console.log(
+    `Note: The app does not use the .env file. For example, if the environment is development, the app will use the .env.development file.`
+  )
+  console.log(`Please create file ${envFilename} and refer to the content in file .env.example`)
   process.exit(1)
 }
 config({
