@@ -121,7 +121,8 @@ class UserService {
 
     return {
       access_token,
-      refresh_token
+      refresh_token,
+      id: user.id
     }
   }
 
@@ -158,6 +159,15 @@ class UserService {
       access_token,
       refresh_token
     }
+  }
+
+  async logout({ refresh_token, refresh_token_id }: { refresh_token: string; refresh_token_id: string }) {
+    await databaseService.refreshTokens.delete({
+      where: {
+        id: refresh_token_id,
+        token: refresh_token
+      }
+    })
   }
 
   async refreshToken({

@@ -1,6 +1,12 @@
 import { NextFunction, Request, Response } from 'express'
 import { USER_MESSAGES } from '~/constants/message'
-import { LoginReqBody, RefreshTokenReqBody, RegisterReqBody, TokenPayload } from '~/models/requests/User.requests'
+import {
+  LogOutReqBody,
+  LoginReqBody,
+  RefreshTokenReqBody,
+  RegisterReqBody,
+  TokenPayload
+} from '~/models/requests/User.requests'
 import userService from '~/services/user.service'
 
 export const registerController = async (
@@ -9,10 +15,13 @@ export const registerController = async (
   next: NextFunction
 ) => {
   const payload = req.body
-  const result = await userService.register(payload)
+  const { access_token, refresh_token } = await userService.register(payload)
   return res.json({
     message: USER_MESSAGES.REGISTER_SUCCESS,
-    result
+    result: {
+      access_token,
+      refresh_token
+    }
   })
 }
 
@@ -23,6 +32,15 @@ export const loginController = async (req: Request<any, any, LoginReqBody>, res:
   return res.json({
     message: USER_MESSAGES.LOGIN_SUCCESS,
     result
+  })
+}
+
+export const logoutController = async (req: Request<any, any, LogOutReqBody>, res: Response, next: NextFunction) => {
+  const { refresh_token } = req.body
+  const { id: refresh_token_id } = req.decoded_refresh_token as TokenPayload
+  await userService.logout({ refresh_token, refresh_token_id })
+  return res.json({
+    message: USER_MESSAGES.LOGOUT_SUCCESS
   })
 }
 
