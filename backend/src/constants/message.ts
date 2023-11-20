@@ -34,5 +34,12 @@ export const USER_MESSAGES = {
   USED_REFRESH_TOKEN_OR_NOT_EXIST: 'Used refresh token is not exist',
   REFRESH_TOKEN_SUCCESS: 'Refresh token was successfully',
   LOGOUT_SUCCESS: 'Logout was successfully',
-  GET_ME_SUCCESS: 'Get me was successfully'
+  GET_ME_SUCCESS: 'Get me was successfully',
+  CHANGE_PASSWORD_SUCCESS: 'Change password was successfully',
+  USER_NOT_FOUND: 'User not found',
+  OLD_PASSWORD_NOT_MATCH: 'Old password was not match',
+  CONFIRM_PASSWORD_IS_REQUIRED: 'Confirm password is required',
+  CONFIRM_PASSWORD_MUST_BE_A_STRING: 'Confirm password must be a string',
+  CONFIRM_PASSWORD_MUST_BE_STRONG: 'Confirm password must be strong',
+  CONFIRM_PASSWORD_MUST_BE_THE_SAME_AS_PASSWORD: 'Confirm password must be the same as the specified password'
 } as const

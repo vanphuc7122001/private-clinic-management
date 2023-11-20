@@ -246,6 +246,17 @@ class UserService {
 
     return result
   }
+
+  async changePassword(user_id: string, password: string) {
+    await databaseService.users.update({
+      where: {
+        id: user_id
+      },
+      data: {
+        password: hashPassword(password)
+      }
+    })
+  }
 }
 
 const userService = new UserService()

@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import {
+  changePasswordController,
   getMeController,
   loginController,
   logoutController,
@@ -8,6 +9,7 @@ import {
 } from '~/controllers/user.controllers'
 import {
   accessTokenValidator,
+  changePasswordValidator,
   loginValidator,
   refreshTokenValidator,
   registerValidator
@@ -56,5 +58,20 @@ userRouters.post('/refresh-token', refreshTokenValidator, wrapRequestHandler(ref
  * Headers : Bearer <access_token>
  */
 userRouters.get('/me', accessTokenValidator, wrapRequestHandler(getMeController))
+
+/**
+ * Description: change password user
+ * Path: /change-password
+ * Method: PATCH
+ * Headers : {Authorization: Bearer <access_token>}
+ * Body: {old_password: string,new_password: string,  confirm_password: string}
+ */
+
+userRouters.patch(
+  '/change-password',
+  accessTokenValidator,
+  changePasswordValidator,
+  wrapRequestHandler(changePasswordController)
+)
 
 export default userRouters

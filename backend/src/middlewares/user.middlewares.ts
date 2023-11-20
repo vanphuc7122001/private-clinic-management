@@ -14,6 +14,7 @@ import HTTP_STATUS from '~/constants/httpStatus'
 import { verifyToken } from '~/utils/jwt'
 import { envConfig } from '~/constants/config'
 import { JsonWebTokenError } from 'jsonwebtoken'
+import { TokenPayload } from '~/models/requests/User.requests'
 
 const genderType = stringEnumToArray(Genders)
 
@@ -34,6 +35,36 @@ const passwordSchema: ParamSchema = {
       minSymbols: 1
     },
     errorMessage: USER_MESSAGES.PASSWORD_MUST_BE_STRONG
+  }
+}
+
+const confirmPassSchema = ({ paramsConfirm = 'password' }: { paramsConfirm?: string }): ParamSchema => {
+  return {
+    notEmpty: {
+      errorMessage: USER_MESSAGES.CONFIRM_PASSWORD_IS_REQUIRED
+    },
+    isString: {
+      errorMessage: USER_MESSAGES.CONFIRM_PASSWORD_MUST_BE_A_STRING
+    },
+    isLength: isLength({ min: 1, max: 50, field: 'comfirm password', name: 'User' }),
+    isStrongPassword: {
+      options: {
+        minLength: 8,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1
+      },
+      errorMessage: USER_MESSAGES.CONFIRM_PASSWORD_MUST_BE_STRONG
+    },
+    custom: {
+      options: (value, { req }) => {
+        if (value != req.body[paramsConfirm as string]) {
+          throw new Error(USER_MESSAGES.CONFIRM_PASSWORD_MUST_BE_THE_SAME_AS_PASSWORD)
+        }
+        return true
+      }
+    }
   }
 }
 
@@ -109,17 +140,9 @@ export const registerValidator = validate(
         notEmpty: undefined
       },
       confirm_password: {
-        ...passwordSchema,
+        ...confirmPassSchema({}),
         optional: true,
-        custom: {
-          options: (value, { req }) => {
-            if (value !== req.body.password) {
-              throw new Error(USER_MESSAGES.CONFIRM_PASSWORD_MUST_EQUAL_PASSWORD)
-            }
-
-            return true
-          }
-        }
+        notEmpty: undefined
       },
       is_patient: {
         optional: true,
@@ -257,6 +280,44 @@ export const refreshTokenValidator = validate(
           }
         }
       }
+    },
+    ['body']
+  )
+)
+
+export const changePasswordValidator = validate(
+  checkSchema(
+    {
+      old_password: {
+        ...passwordSchema,
+        custom: {
+          options: async (value, { req }) => {
+            const { user_id } = (req as Request).decoded_authorization as TokenPayload
+            const user = await databaseService.users.findFirst({
+              where: {
+                id: user_id
+              }
+            })
+            if (!user) {
+              throw new ErrorWithStatus({
+                message: USER_MESSAGES.USER_NOT_FOUND,
+                status: HTTP_STATUS.NOT_FOUND
+              })
+            }
+            const { password } = user
+            const isMatch = password === hashPassword(value)
+            if (!isMatch) {
+              throw new ErrorWithStatus({
+                message: USER_MESSAGES.OLD_PASSWORD_NOT_MATCH,
+                status: HTTP_STATUS.UNAUTHORIZED
+              })
+            }
+            return true
+          }
+        }
+      },
+      new_password: passwordSchema,
+      confirm_password: confirmPassSchema({ paramsConfirm: 'new_password' })
     },
     ['body']
   )

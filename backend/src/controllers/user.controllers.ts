@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { USER_MESSAGES } from '~/constants/message'
 import {
+  ChangePassReqBody,
   LogOutReqBody,
   LoginReqBody,
   RefreshTokenReqBody,
@@ -72,5 +73,18 @@ export const getMeController = async (req: Request, res: Response, next: NextFun
   return res.json({
     message: USER_MESSAGES.GET_ME_SUCCESS,
     result
+  })
+}
+
+export const changePasswordController = async (
+  req: Request<any, any, ChangePassReqBody>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { user_id } = req.decoded_authorization as TokenPayload
+  const { new_password: password } = req.body
+  await userService.changePassword(user_id, password)
+  return res.json({
+    message: USER_MESSAGES.CHANGE_PASSWORD_SUCCESS
   })
 }
