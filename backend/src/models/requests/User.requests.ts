@@ -1,5 +1,5 @@
 import { JwtPayload } from 'jsonwebtoken'
-import { TokenType } from '~/constants/enum'
+import { Roles, TokenType } from '~/constants/enum'
 
 export interface RegisterReqBody {
   name: string
@@ -18,11 +18,16 @@ export interface LoginReqBody {
   password: string
 }
 
+export interface RefreshTokenReqBody {
+  refresh_token: string
+}
+
 export interface TokenPayload extends JwtPayload {
   user_id: string
   token_type: TokenType
-  role: string
+  role: Roles
   is_patient: boolean
   exp: number
   iat: number
+  id: string
 }

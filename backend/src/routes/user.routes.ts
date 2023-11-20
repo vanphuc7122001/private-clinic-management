@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import { loginController, registerController } from '~/controllers/user.controllers'
-import { loginValidator, registerValidator } from '~/middlewares/user.middlewares'
+import { loginController, refreshTokenController, registerController } from '~/controllers/user.controllers'
+import { loginValidator, refreshTokenValidator, registerValidator } from '~/middlewares/user.middlewares'
 import { wrapRequestHandler } from '~/utils/handlers'
 
 const userRouters = Router()
@@ -20,4 +20,13 @@ userRouters.post('/register', registerValidator, wrapRequestHandler(registerCont
  * Body: {email: string , password: string}
  */
 userRouters.post('/login', loginValidator, wrapRequestHandler(loginController))
+
+/**
+ * Description: refresh token
+ * Method : POST
+ * Path : /refresh-token
+ * Body :  {refresh_token : string}
+ */
+userRouters.post('/refresh-token', refreshTokenValidator, wrapRequestHandler(refreshTokenController))
+
 export default userRouters

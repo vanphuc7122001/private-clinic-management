@@ -2,13 +2,18 @@ import { ParamSchema, checkSchema } from 'express-validator'
 import { USER_MESSAGES } from '~/constants/message'
 import { validate } from '~/utils/validation'
 import { isLength } from './common.middlewares'
-import { stringEnumToArray } from '~/utils/commons'
+import { stringEnumToArray, verifyAccessToken } from '~/utils/commons'
 import { Genders } from '~/constants/enum'
-import databaseService from '~/services/database.service'
+import { Request } from 'express'
 import { hashPassword } from '~/utils/crypto'
 import { ErrorWithStatus } from '~/models/Errors'
-import HTTP_STATUS from '~/constants/httpStatus'
 import { USER_EMAIL_REGEX } from '~/constants/regex'
+
+import databaseService from '~/services/database.service'
+import HTTP_STATUS from '~/constants/httpStatus'
+import { verifyToken } from '~/utils/jwt'
+import { envConfig } from '~/constants/config'
+import { JsonWebTokenError } from 'jsonwebtoken'
 
 const genderType = stringEnumToArray(Genders)
 
@@ -183,6 +188,74 @@ export const loginValidator = validate(
           errorMessage: new Error(USER_MESSAGES.PASSWORD_IS_REQUIRED)
         },
         trim: true
+      }
+    },
+    ['body']
+  )
+)
+
+export const accessTokenValidator = validate(
+  checkSchema(
+    {
+      Authorization: {
+        custom: {
+          options: async (value: string, { req }) => {
+            const access_token = (value || '').split(' ')[1]
+            return await verifyAccessToken(access_token, req as Request)
+          }
+        }
+      }
+    },
+    ['headers']
+  )
+)
+
+export const refreshTokenValidator = validate(
+  checkSchema(
+    {
+      refresh_token: {
+        custom: {
+          options: async (value: string, { req }) => {
+            if (!value) {
+              throw new ErrorWithStatus({
+                message: USER_MESSAGES.REFRESH_TOKEN_IS_REQUIRED,
+                status: HTTP_STATUS.NOT_FOUND
+              })
+            }
+            try {
+              const [decoded_refresh_token, refresh_token] = await Promise.all([
+                verifyToken({
+                  token: value,
+                  secretOrPublicKey: envConfig.jwtSecretRefreshToken
+                }),
+                databaseService.refreshTokens.findFirst({
+                  where: {
+                    token: value
+                  }
+                })
+              ])
+
+              if (!refresh_token) {
+                throw new ErrorWithStatus({
+                  message: USER_MESSAGES.USED_REFRESH_TOKEN_OR_NOT_EXIST,
+                  status: HTTP_STATUS.UNAUTHORIZED
+                })
+              }
+              decoded_refresh_token.id = refresh_token.id
+              ;(req as Request).decoded_refresh_token = decoded_refresh_token
+            } catch (error) {
+              if (error instanceof JsonWebTokenError) {
+                throw new ErrorWithStatus({
+                  message: error.message,
+                  status: HTTP_STATUS.UNAUTHORIZED
+                })
+              }
+              throw error
+            }
+
+            return true
+          }
+        }
       }
     },
     ['body']

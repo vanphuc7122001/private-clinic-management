@@ -9,7 +9,7 @@ import RefreshToken from '~/models/schemas/RefreshToken.schema'
 
 interface PayloadToken {
   user_id: string
-  role: string
+  role: Roles
   is_patient: boolean
   exp?: number
 }
@@ -105,7 +105,7 @@ class UserService {
     ])
 
     const { is_patient, id: user_id } = user
-    const name = role?.name as string
+    const name = role?.name as Roles
 
     const [access_token, refresh_token] = await this.signAccessAndRefreshToken({
       is_patient: is_patient,
@@ -146,7 +146,7 @@ class UserService {
     const [access_token, refresh_token] = await this.signAccessAndRefreshToken({
       is_patient,
       user_id,
-      role: roles.name
+      role: roles.name as Roles
     })
 
     const { iat, exp } = await this.decodeRefreshToken(refresh_token)
@@ -157,6 +157,44 @@ class UserService {
     return {
       access_token,
       refresh_token
+    }
+  }
+
+  async refreshToken({
+    refresh_token_id,
+    user_id,
+    role,
+    is_patient,
+    exp,
+    iat,
+    refresh_token
+  }: {
+    refresh_token_id: string
+    user_id: string
+    role: Roles
+    is_patient: boolean
+    exp: number
+    iat: number
+    refresh_token: string
+  }) {
+    const [new_access_token, new_refresh_token] = await Promise.all([
+      this.signAccessToken({ user_id, is_patient, role }),
+      this.signRefreshToken({ user_id, exp, is_patient, role }),
+      databaseService.refreshTokens.delete({
+        where: {
+          id: refresh_token_id,
+          token: refresh_token
+        }
+      })
+    ])
+
+    await databaseService.refreshTokens.create({
+      data: new RefreshToken({ exp, iat, token: new_refresh_token, user_id })
+    })
+
+    return {
+      access_token: new_access_token,
+      refresh_token: new_refresh_token
     }
   }
 }

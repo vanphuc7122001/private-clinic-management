@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { USER_MESSAGES } from '~/constants/message'
-import { LoginReqBody, RegisterReqBody } from '~/models/requests/User.requests'
+import { LoginReqBody, RefreshTokenReqBody, RegisterReqBody, TokenPayload } from '~/models/requests/User.requests'
 import userService from '~/services/user.service'
 
 export const registerController = async (
@@ -22,6 +22,28 @@ export const loginController = async (req: Request<any, any, LoginReqBody>, res:
 
   return res.json({
     message: USER_MESSAGES.LOGIN_SUCCESS,
+    result
+  })
+}
+
+export const refreshTokenController = async (
+  req: Request<any, any, RefreshTokenReqBody>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { refresh_token } = req.body
+  const { exp, iat, is_patient, role, user_id, id: refresh_token_id } = req.decoded_refresh_token as TokenPayload
+  const result = await userService.refreshToken({
+    refresh_token_id,
+    user_id,
+    role,
+    is_patient,
+    exp,
+    iat,
+    refresh_token
+  })
+  return res.json({
+    message: USER_MESSAGES.REFRESH_TOKEN_SUCCESS,
     result
   })
 }

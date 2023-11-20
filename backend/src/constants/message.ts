@@ -28,5 +28,9 @@ export const USER_MESSAGES = {
   CONFIRM_PASSWORD_MUST_EQUAL_PASSWORD: 'Password must be equal to the password',
   LOGIN_SUCCESS: 'Login succeeded',
   EMAIL_OR_PASSWORD_INCORRECT: 'Email or password incorrect',
-  EMAIL_IS_REQUIRED: 'Email is required'
+  EMAIL_IS_REQUIRED: 'Email is required',
+  ACCESS_TOKEN_IS_REQUIRED: 'Access token is required',
+  REFRESH_TOKEN_IS_REQUIRED: 'Refresh token is required',
+  USED_REFRESH_TOKEN_OR_NOT_EXIST: 'Used refresh token is not exist',
+  REFRESH_TOKEN_SUCCESS: 'Refresh token was successfully'
 } as const

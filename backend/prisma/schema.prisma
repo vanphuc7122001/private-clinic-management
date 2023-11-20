@@ -33,7 +33,6 @@ model User {
   role_id              String
   created_at           DateTime         @default(now())
   updated_at           DateTime         @updatedAt
-  refresh_token        RefreshToken[]
   medicalRecordDoctor  MedicalRecord[]  @relation("medical_records_doctor")
   medicalRecordPatient MedicalRecord[]  @relation("medical_records_patient")
   post                 Post[]
@@ -45,6 +44,7 @@ model User {
   billPatient          Bill[]           @relation("bill_patient")
   prescriptionDoctor   Prescriptions[]  @relation("prescription_doctor")
   prescriptionPatient  Prescriptions[]  @relation("prescription_patient")
+  RefreshToken         RefreshToken[]
 
   @@map("users")
 }
@@ -52,12 +52,13 @@ model User {
 model RefreshToken {
   id         String   @id @default(uuid())
   token      String   @db.Text
-  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user_id    String   @db.VarChar(200)
   exp        DateTime
   iat        DateTime
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  User       User?    @relation(fields: [userId], references: [id])
+  userId     String?
 
   @@map("refresh_tokens")
 }
