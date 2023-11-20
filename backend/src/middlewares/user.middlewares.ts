@@ -119,55 +119,81 @@ const forgotPasswordTokenSchema: ParamSchema = {
   }
 }
 
+const imageSchema: ParamSchema = {
+  optional: true,
+  isString: {
+    errorMessage: USER_MESSAGES.AVATAR_MUST_BE_STRING
+  }
+}
+
+const addressSchema: ParamSchema = {
+  notEmpty: {
+    errorMessage: USER_MESSAGES.ADDRESS_IS_REQUIRED
+  },
+  isString: {
+    errorMessage: USER_MESSAGES.ADDRESS_MUST_BE_STRING
+  },
+  isLength: isLength({ min: 1, max: 200, field: 'address', name: 'User' }),
+  trim: true
+}
+
+const phoneSchema: ParamSchema = {
+  notEmpty: {
+    errorMessage: USER_MESSAGES.PHONE_IS_REQUIRED
+  },
+  isString: {
+    errorMessage: USER_MESSAGES.PHONE_MUST_BE_STRING
+  },
+  isLength: isLength({ min: 10, max: 15, field: 'address', name: 'User' }),
+  trim: true
+}
+
+const nameSchema = ({ field, name }: { field: string; name: string }): ParamSchema => {
+  return {
+    notEmpty: {
+      errorMessage: USER_MESSAGES.NAME_IS_REQUIRED
+    },
+    isString: {
+      errorMessage: USER_MESSAGES.NAME_MUST_BE_A_STRING
+    },
+    trim: true,
+    isLength: isLength({ min: 1, max: 100, field, name })
+  }
+}
+
+const genderSchema: ParamSchema = {
+  notEmpty: {
+    errorMessage: USER_MESSAGES.GENDER_IS_REQUIRED
+  },
+  isIn: {
+    options: [genderType],
+    errorMessage: `Gender type must be one of ${genderType}`
+  },
+  trim: true
+}
+
+const dateOfBirthSchema: ParamSchema = {
+  notEmpty: {
+    errorMessage: USER_MESSAGES.DATE_OF_BIRTH_IS_REQUIRED
+  },
+  isISO8601: {
+    options: {
+      strict: true,
+      strictSeparator: true
+    },
+    errorMessage: USER_MESSAGES.DATE_OF_BIRTH_MUST_BE_ISO8601
+  }
+}
+
 export const registerValidator = validate(
   checkSchema(
     {
-      name: {
-        notEmpty: {
-          errorMessage: USER_MESSAGES.NAME_IS_REQUIRED
-        },
-        isString: {
-          errorMessage: USER_MESSAGES.NAME_MUST_BE_A_STRING
-        },
-        trim: true,
-        isLength: isLength({ min: 1, max: 100, field: 'name', name: 'User' })
-      },
-      gender: {
-        notEmpty: {
-          errorMessage: USER_MESSAGES.GENDER_IS_REQUIRED
-        },
-        isIn: {
-          options: [genderType],
-          errorMessage: `Gender type must be one of ${genderType}`
-        },
-        trim: true
-      },
-      avatar: {
-        optional: true,
-        isString: {
-          errorMessage: USER_MESSAGES.AVATAR_MUST_BE_STRING
-        }
-      },
-      address: {
-        notEmpty: {
-          errorMessage: USER_MESSAGES.ADDRESS_IS_REQUIRED
-        },
-        isString: {
-          errorMessage: USER_MESSAGES.ADDRESS_MUST_BE_STRING
-        },
-        isLength: isLength({ min: 1, max: 200, field: 'address', name: 'User' }),
-        trim: true
-      },
-      phone: {
-        notEmpty: {
-          errorMessage: USER_MESSAGES.PHONE_IS_REQUIRED
-        },
-        isString: {
-          errorMessage: USER_MESSAGES.PHONE_MUST_BE_STRING
-        },
-        isLength: isLength({ min: 10, max: 15, field: 'address', name: 'User' }),
-        trim: true
-      },
+      name: nameSchema({ field: 'name', name: 'User' }),
+      gender: genderSchema,
+      avatar: imageSchema,
+      address: addressSchema,
+      phone: phoneSchema,
+      date_of_birth: dateOfBirthSchema,
       email: {
         optional: true,
         isEmail: {
@@ -413,6 +439,40 @@ export const resetPasswordValidator = validate(
       forgot_password_token: forgotPasswordTokenSchema,
       password: passwordSchema,
       confirm_password: confirmPassSchema({})
+    },
+    ['body']
+  )
+)
+
+export const updateMeValidator = validate(
+  checkSchema(
+    {
+      name: {
+        ...nameSchema({ field: 'name', name: 'Update user' }),
+        optional: true,
+        notEmpty: undefined
+      },
+      avatar: imageSchema,
+      address: {
+        ...addressSchema,
+        optional: true,
+        notEmpty: undefined
+      },
+      phone: {
+        ...phoneSchema,
+        optional: true,
+        notEmpty: undefined
+      },
+      gender: {
+        ...genderSchema,
+        optional: true,
+        notEmpty: undefined
+      },
+      date_of_birth: {
+        ...dateOfBirthSchema,
+        notEmpty: undefined,
+        optional: true
+      }
     },
     ['body']
   )

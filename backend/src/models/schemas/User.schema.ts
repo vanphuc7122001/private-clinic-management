@@ -3,6 +3,7 @@ import { ObjectId } from '~/utils/commons'
 interface UserType {
   id?: string
   name: string
+  date_of_birth: Date
   avatar?: string
   address: string
   phone: string
@@ -20,6 +21,7 @@ export default class User {
   id?: string
   name: string
   avatar?: string
+  date_of_birth: Date
   address: string
   phone: string
   email?: string
@@ -36,6 +38,7 @@ export default class User {
     this.id = user.id || ObjectId()
     this.name = user.name
     this.avatar = user.avatar
+    this.date_of_birth = user.date_of_birth
     this.address = user.address
     this.phone = user.phone
     this.email = user.email

@@ -4,6 +4,7 @@ import { Roles, TokenType } from '~/constants/enum'
 export interface RegisterReqBody {
   name: string
   gender: string
+  date_of_birth: string
   avatar: string
   address: string
   phone: string
@@ -40,6 +41,15 @@ export interface ResetPassReq {
   forgot_password_token: string
   password: string
   confirm_password: string
+}
+
+export interface UpdateMeReqBody {
+  name?: string
+  avatar?: string
+  date_of_birth?: string
+  address?: string
+  phone?: string
+  gender?: string
 }
 
 export interface TokenPayload extends JwtPayload {

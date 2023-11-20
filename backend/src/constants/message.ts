@@ -45,5 +45,8 @@ export const USER_MESSAGES = {
   CHECK_EMAIL_TO_RESET_PASSWORD: 'Check email to reset password',
   FORGOT_PASSWORD_TOKEN_IS_REQUIRED: 'Forgot password token is required',
   INVALID_FORGOT_PASSWORD_TOKEN: 'Invalid forgot password token',
-  RESET_PASSWORD_SUCCESS: 'Reset password successfully'
+  RESET_PASSWORD_SUCCESS: 'Reset password successfully',
+  UPDATE_ME_SUCCESS: 'Update me successfully',
+  DATE_OF_BIRTH_IS_REQUIRED: 'Date of birth is required',
+  DATE_OF_BIRTH_MUST_BE_ISO8601: 'Date of birth must be ISO8601'
 } as const

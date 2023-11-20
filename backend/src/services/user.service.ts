@@ -1,4 +1,4 @@
-import { RegisterReqBody, TokenPayload } from '~/models/requests/User.requests'
+import { RegisterReqBody, TokenPayload, UpdateMeReqBody } from '~/models/requests/User.requests'
 import databaseService from './database.service'
 import { hashPassword } from '~/utils/crypto'
 import User from '~/models/schemas/User.schema'
@@ -85,10 +85,11 @@ class UserService {
 
   async register(payload: RegisterReqBody) {
     const password = payload.password ? hashPassword(payload.password) : undefined
+    const date_of_birth = payload.date_of_birth ? new Date(payload.date_of_birth) : new Date()
     const isSendMailCheck = Boolean(payload.email && payload.password)
     const [user, role] = await Promise.all([
       databaseService.users.create({
-        data: new User({ ...payload, password }),
+        data: new User({ ...payload, password, date_of_birth }),
         select: {
           id: true,
           is_patient: true
@@ -280,6 +281,20 @@ class UserService {
       data: {
         password: hashPassword(password),
         forgot_password_token: ''
+      }
+    })
+  }
+
+  async updateMe(user_id: string, payload: UpdateMeReqBody) {
+    const _payload = payload.date_of_birth
+      ? { ...payload, date_of_birth: new Date(payload.date_of_birth) }
+      : { ...payload }
+    await databaseService.users.update({
+      where: {
+        id: user_id
+      },
+      data: {
+        ..._payload
       }
     })
   }
