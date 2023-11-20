@@ -41,5 +41,9 @@ export const USER_MESSAGES = {
   CONFIRM_PASSWORD_IS_REQUIRED: 'Confirm password is required',
   CONFIRM_PASSWORD_MUST_BE_A_STRING: 'Confirm password must be a string',
   CONFIRM_PASSWORD_MUST_BE_STRONG: 'Confirm password must be strong',
-  CONFIRM_PASSWORD_MUST_BE_THE_SAME_AS_PASSWORD: 'Confirm password must be the same as the specified password'
+  CONFIRM_PASSWORD_MUST_BE_THE_SAME_AS_PASSWORD: 'Confirm password must be the same as the specified password',
+  CHECK_EMAIL_TO_RESET_PASSWORD: 'Check email to reset password',
+  FORGOT_PASSWORD_TOKEN_IS_REQUIRED: 'Forgot password token is required',
+  INVALID_FORGOT_PASSWORD_TOKEN: 'Invalid forgot password token',
+  RESET_PASSWORD_SUCCESS: 'Reset password successfully'
 } as const

@@ -1,18 +1,24 @@
 import { Router } from 'express'
 import {
   changePasswordController,
+  forgotPasswordController,
   getMeController,
   loginController,
   logoutController,
   refreshTokenController,
-  registerController
+  registerController,
+  resetPasswordController,
+  verifyForgotPasswordController
 } from '~/controllers/user.controllers'
 import {
   accessTokenValidator,
   changePasswordValidator,
+  forgotPasswordValidator,
   loginValidator,
   refreshTokenValidator,
-  registerValidator
+  registerValidator,
+  resetPasswordValidator,
+  verifyForgotPasswordValidator
 } from '~/middlewares/user.middlewares'
 import { wrapRequestHandler } from '~/utils/handlers'
 
@@ -73,5 +79,33 @@ userRouters.patch(
   changePasswordValidator,
   wrapRequestHandler(changePasswordController)
 )
+
+/**
+ * Description.  submit email to reset password, send email to user
+ * Path: /forgot-password
+ * Method: POST
+ * Body: {email: string}
+ */
+userRouters.post('/forgot-password', forgotPasswordValidator, wrapRequestHandler(forgotPasswordController))
+
+/**
+ * Description. Verify link in email to reset password
+ * Path: /verify-forgot-password
+ * Method: GET
+ * Body: {forgot_password_token: string}
+ */
+userRouters.get(
+  '/verify-forgot-password',
+  verifyForgotPasswordValidator,
+  wrapRequestHandler(verifyForgotPasswordController)
+)
+
+/**
+ * Description: Reset password
+ * Path: /reset-password
+ * Method: POST
+ * Body: {forgot_password_token: string, password: string, confirm_password: string}
+ */
+userRouters.post('/reset-password', resetPasswordValidator, wrapRequestHandler(resetPasswordController))
 
 export default userRouters

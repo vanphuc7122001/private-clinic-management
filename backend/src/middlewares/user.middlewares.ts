@@ -7,7 +7,6 @@ import { Genders } from '~/constants/enum'
 import { Request } from 'express'
 import { hashPassword } from '~/utils/crypto'
 import { ErrorWithStatus } from '~/models/Errors'
-import { USER_EMAIL_REGEX } from '~/constants/regex'
 
 import databaseService from '~/services/database.service'
 import HTTP_STATUS from '~/constants/httpStatus'
@@ -15,6 +14,7 @@ import { verifyToken } from '~/utils/jwt'
 import { envConfig } from '~/constants/config'
 import { JsonWebTokenError } from 'jsonwebtoken'
 import { TokenPayload } from '~/models/requests/User.requests'
+import { capitalize } from 'lodash'
 
 const genderType = stringEnumToArray(Genders)
 
@@ -63,6 +63,57 @@ const confirmPassSchema = ({ paramsConfirm = 'password' }: { paramsConfirm?: str
           throw new Error(USER_MESSAGES.CONFIRM_PASSWORD_MUST_BE_THE_SAME_AS_PASSWORD)
         }
         return true
+      }
+    }
+  }
+}
+
+const forgotPasswordTokenSchema: ParamSchema = {
+  trim: true,
+  custom: {
+    options: async (value: string, { req }) => {
+      if (!value) {
+        throw new ErrorWithStatus({
+          message: USER_MESSAGES.FORGOT_PASSWORD_TOKEN_IS_REQUIRED,
+          status: HTTP_STATUS.UNAUTHORIZED
+        })
+      }
+
+      try {
+        const decoded_forgot_password_token = await verifyToken({
+          token: value,
+          secretOrPublicKey: envConfig.jwtSecretForgotPasswordToken
+        })
+
+        const { user_id } = decoded_forgot_password_token
+        const user = await databaseService.users.findFirst({
+          where: {
+            id: user_id
+          }
+        })
+        if (!user) {
+          throw new ErrorWithStatus({
+            message: USER_MESSAGES.USER_NOT_FOUND,
+            status: HTTP_STATUS.UNAUTHORIZED
+          })
+        }
+
+        if (user.forgot_password_token !== value) {
+          throw new ErrorWithStatus({
+            message: USER_MESSAGES.INVALID_FORGOT_PASSWORD_TOKEN,
+            status: HTTP_STATUS.UNAUTHORIZED
+          })
+        }
+        ;(req as Request).decoded_forgot_password_token = decoded_forgot_password_token
+      } catch (error) {
+        if (error instanceof JsonWebTokenError) {
+          throw new ErrorWithStatus({
+            message: capitalize(error.message),
+            status: HTTP_STATUS.UNAUTHORIZED
+          })
+        }
+
+        throw error
       }
     }
   }
@@ -181,10 +232,6 @@ export const loginValidator = validate(
           options: async (value, { req }) => {
             if (!value) {
               throw new Error(USER_MESSAGES.EMAIL_IS_REQUIRED)
-            }
-
-            if (!USER_EMAIL_REGEX.test(value)) {
-              throw new Error(USER_MESSAGES.EMAIL_IS_INVALID)
             }
 
             const password = req.body.password
@@ -318,6 +365,54 @@ export const changePasswordValidator = validate(
       },
       new_password: passwordSchema,
       confirm_password: confirmPassSchema({ paramsConfirm: 'new_password' })
+    },
+    ['body']
+  )
+)
+
+export const forgotPasswordValidator = validate(
+  checkSchema(
+    {
+      email: {
+        trim: true,
+        custom: {
+          options: async (value, { req }) => {
+            if (!value) {
+              throw new ErrorWithStatus({ message: USER_MESSAGES.EMAIL_IS_REQUIRED, status: HTTP_STATUS.BAD_REQUEST })
+            }
+
+            const user = await databaseService.users.findFirst({
+              where: { email: value }
+            })
+            if (!user) {
+              throw new ErrorWithStatus({ message: USER_MESSAGES.USER_NOT_FOUND, status: HTTP_STATUS.NOT_FOUND })
+            }
+
+            req.user = user
+            return true
+          }
+        }
+      }
+    },
+    ['body']
+  )
+)
+
+export const verifyForgotPasswordValidator = validate(
+  checkSchema(
+    {
+      forgot_password_token: forgotPasswordTokenSchema
+    },
+    ['query']
+  )
+)
+
+export const resetPasswordValidator = validate(
+  checkSchema(
+    {
+      forgot_password_token: forgotPasswordTokenSchema,
+      password: passwordSchema,
+      confirm_password: confirmPassSchema({})
     },
     ['body']
   )

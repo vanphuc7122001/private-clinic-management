@@ -6,7 +6,7 @@ import { signToken, verifyToken } from '~/utils/jwt'
 import { Roles, TokenType } from '~/constants/enum'
 import { envConfig } from '~/constants/config'
 import RefreshToken from '~/models/schemas/RefreshToken.schema'
-import { sendEmailRegister } from '~/utils/email'
+import { sendEmailRegister, sendForgotPasswrodEmail } from '~/utils/email'
 
 interface PayloadToken {
   user_id: string
@@ -56,13 +56,11 @@ class UserService {
     })
   }
 
-  private signForgotPasswordToken({ user_id, is_patient, role }: PayloadToken) {
+  private signForgotPasswordToken(user_id: string) {
     return signToken({
       payload: {
         user_id,
-        token_type: TokenType.ForgotPasswordToken,
-        is_patient,
-        role
+        token_type: TokenType.ForgotPasswordToken
       },
       privateKey: envConfig.jwtSecretForgotPasswordToken,
       options: {
@@ -254,6 +252,34 @@ class UserService {
       },
       data: {
         password: hashPassword(password)
+      }
+    })
+  }
+
+  async forgotPassword({ user_id, email }: { user_id: string; email: string }) {
+    const forgot_password_token = await this.signForgotPasswordToken(user_id)
+
+    Promise.all([
+      databaseService.users.update({
+        where: {
+          id: user_id
+        },
+        data: {
+          forgot_password_token
+        }
+      }),
+      sendForgotPasswrodEmail({ forgot_password_token, subject: 'Verify Forgot Password', toAddress: email })
+    ])
+  }
+
+  async resetPassword(user_id: string, password: string) {
+    await databaseService.users.update({
+      where: {
+        id: user_id
+      },
+      data: {
+        password: hashPassword(password),
+        forgot_password_token: ''
       }
     })
   }

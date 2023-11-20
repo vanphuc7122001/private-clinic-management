@@ -1,13 +1,17 @@
 import { NextFunction, Request, Response } from 'express'
+import { envConfig } from '~/constants/config'
 import { USER_MESSAGES } from '~/constants/message'
 import {
   ChangePassReqBody,
+  ForgotPassReqBody,
   LogOutReqBody,
   LoginReqBody,
   RefreshTokenReqBody,
   RegisterReqBody,
+  ResetPassReq,
   TokenPayload
 } from '~/models/requests/User.requests'
+import User from '~/models/schemas/User.schema'
 import userService from '~/services/user.service'
 
 export const registerController = async (
@@ -86,5 +90,39 @@ export const changePasswordController = async (
   await userService.changePassword(user_id, password)
   return res.json({
     message: USER_MESSAGES.CHANGE_PASSWORD_SUCCESS
+  })
+}
+
+export const forgotPasswordController = async (
+  req: Request<any, any, ForgotPassReqBody>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id: user_id } = req.user as User
+  await userService.forgotPassword({ user_id: user_id as string, email: req.body.email })
+  return res.json({
+    message: USER_MESSAGES.CHECK_EMAIL_TO_RESET_PASSWORD
+  })
+}
+
+export const verifyForgotPasswordController = (
+  req: Request<any, any, any, { forgot_password_token: string }>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { forgot_password_token } = req.query
+  return res.redirect(`${envConfig.clientUrl}/reset-password?token=${forgot_password_token}`)
+}
+
+export const resetPasswordController = async (
+  req: Request<any, any, ResetPassReq>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { user_id } = req.decoded_forgot_password_token as TokenPayload
+  const { password } = req.body
+  await userService.resetPassword(user_id, password)
+  return res.json({
+    message: USER_MESSAGES.RESET_PASSWORD_SUCCESS
   })
 }

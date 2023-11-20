@@ -109,7 +109,7 @@ export const sendForgotPasswrodEmail = ({
       .replace('{{titleLink}}', 'Reset password')
       .replace(
         '{{link}}',
-        `${envConfig.host}api/users/verify-forgot-password?forgot_password_token=${forgot_password_token}`
+        `${envConfig.host}/api/v1/users/verify-forgot-password?forgot_password_token=${forgot_password_token}`
       )
   })
 }
