@@ -6,6 +6,7 @@ import { signToken, verifyToken } from '~/utils/jwt'
 import { Roles, TokenType } from '~/constants/enum'
 import { envConfig } from '~/constants/config'
 import RefreshToken from '~/models/schemas/RefreshToken.schema'
+import { sendEmailRegister } from '~/utils/email'
 
 interface PayloadToken {
   user_id: string
@@ -86,6 +87,7 @@ class UserService {
 
   async register(payload: RegisterReqBody) {
     const password = payload.password ? hashPassword(payload.password) : undefined
+    const isSendMailCheck = Boolean(payload.email && payload.password)
     const [user, role] = await Promise.all([
       databaseService.users.create({
         data: new User({ ...payload, password }),
@@ -103,6 +105,25 @@ class UserService {
         }
       })
     ])
+
+    if (isSendMailCheck && payload.is_patient) {
+      await sendEmailRegister({
+        subject: 'Register user patient',
+        title: 'send email when registering an account',
+        content: `You have just successfully registered an account with a password ${payload.password}`,
+        toAddress: payload.email as string
+      })
+    }
+
+    if (isSendMailCheck && !payload.is_patient) {
+      await sendEmailRegister({
+        subject: 'Register user staff',
+        title: 'Employee confirmation',
+        content: `
+        You have just become an employee of the clinic with: <br> <b>username: ${payload.email}</b>, <b>password: ${payload.password}</b>`,
+        toAddress: payload.email as string
+      })
+    }
 
     const { is_patient, id: user_id } = user
     const name = role?.name as Roles
@@ -206,6 +227,24 @@ class UserService {
       access_token: new_access_token,
       refresh_token: new_refresh_token
     }
+  }
+
+  async getMe(user_id: string) {
+    const result = await databaseService.users.findFirstOrThrow({
+      where: {
+        id: user_id
+      },
+      select: {
+        email: true,
+        address: true,
+        gender: true,
+        name: true,
+        phone: true,
+        password: true
+      }
+    })
+
+    return result
   }
 }
 

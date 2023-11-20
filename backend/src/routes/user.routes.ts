@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import {
+  getMeController,
   loginController,
   logoutController,
   refreshTokenController,
@@ -42,10 +43,18 @@ userRouters.post('/logout', accessTokenValidator, refreshTokenValidator, wrapReq
 
 /**
  * Description: refresh token
- * Method : POST
  * Path : /refresh-token
+ * Method : POST
  * Body :  {refresh_token : string}
  */
 userRouters.post('/refresh-token', refreshTokenValidator, wrapRequestHandler(refreshTokenController))
+
+/**
+ * Description: get me
+ * Path : /refresh-token
+ * Method : get
+ * Headers : Bearer <access_token>
+ */
+userRouters.get('/me', accessTokenValidator, wrapRequestHandler(getMeController))
 
 export default userRouters
