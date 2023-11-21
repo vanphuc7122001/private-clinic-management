@@ -48,5 +48,6 @@ export const USER_MESSAGES = {
   RESET_PASSWORD_SUCCESS: 'Reset password successfully',
   UPDATE_ME_SUCCESS: 'Update me successfully',
   DATE_OF_BIRTH_IS_REQUIRED: 'Date of birth is required',
-  DATE_OF_BIRTH_MUST_BE_ISO8601: 'Date of birth must be ISO8601'
+  DATE_OF_BIRTH_MUST_BE_ISO8601: 'Date of birth must be ISO8601',
+  NOT_PERMISSION: 'Not allowed to access this resource'
 } as const
