@@ -51,3 +51,9 @@ export const USER_MESSAGES = {
   DATE_OF_BIRTH_MUST_BE_ISO8601: 'Date of birth must be ISO8601',
   NOT_PERMISSION: 'Not allowed to access this resource'
 } as const
+
+export const MEDIA_MESSAGES = {
+  UPLOAD_IMAGE_SINGLE_SUCCESS: 'Uploading image is successfully uploaded',
+  ERROR_WHEN_DELETE_IMAGE: 'Err deleting image',
+  ERROR_WHEN_UPDATE_IMAGE: 'Error when updating image'
+} as const
