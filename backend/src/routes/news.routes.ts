@@ -8,7 +8,7 @@ import {
   updateNewsController
 } from '~/controllers/news.controllers'
 import { checkPermission } from '~/middlewares/common.middlewares'
-import { createNewsValidator } from '~/middlewares/news.middlewares'
+import { createNewsValidator, updateNewsValidator } from '~/middlewares/news.middlewares'
 import { accessTokenValidator } from '~/middlewares/user.middlewares'
 import { wrapRequestHandler } from '~/utils/handlers'
 
@@ -73,6 +73,7 @@ newsRouters.patch(
   '/:id',
   accessTokenValidator,
   checkPermission([Roles.ADMIN]),
+  updateNewsValidator,
   wrapRequestHandler(updateNewsController)
 )
 

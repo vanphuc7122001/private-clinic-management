@@ -193,12 +193,13 @@ model Prescriptions {
 }
 
 model Medicines {
-  id           String @id @default(uuid())
-  name         String @db.VarChar(200)
-  manufacturer String @db.VarChar(200)
-  usage        String @db.VarChar(200)
-  quantity     String @db.VarChar(200)
-  price        String @db.VarChar(200)
+  id             String @id @default(uuid())
+  name           String @db.VarChar(200)
+  manufacturer   String @db.VarChar(200)
+  usage          String @db.VarChar(200)
+  quantity       String @db.VarChar(200)
+  price          String @db.VarChar(200)
+  purchase_price String @db.VarChar(200)
 
   prescriptionsDetailMedicine PrescriptionsDetail[] @relation("prescriptions_detail_medicine")
   created_at                  DateTime              @default(now())

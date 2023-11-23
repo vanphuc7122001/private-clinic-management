@@ -2,7 +2,8 @@ export enum Roles {
   ADMIN = 'admin',
   DOCTOR = 'doctor',
   SUPPORTER = 'supporter',
-  PATIENT = 'patient'
+  PATIENT = 'patient',
+  PHARMACIST = 'pharmacist'
 }
 
 export enum Genders {

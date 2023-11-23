@@ -95,3 +95,10 @@ export const NEWS_MESSAGES = {
   UPDATE_NEWS_SUCCESS: 'Update news articles successfully',
   DELETE_NEWS_SUCCESS: 'Delete news articles successfully'
 } as const
+
+export const MEDICINE_MESSAGES = {
+  CREATE_MEDICINE_SUCCESS: 'Create new medicine successfully',
+  UPDATE_MEDICINE_SUCCESS: 'Update medicine successfully',
+  DELETE_MEDICINE_SUCCESS: 'Delete medicine successfully',
+  GET_ALL_MEDICINE_SUCCESS: 'Get all medicine successfully'
+} as const
