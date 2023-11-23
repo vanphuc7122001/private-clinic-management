@@ -126,3 +126,11 @@ export const APPOINTMENT_MESSAGES = {
   GET_APPOINTMENTS_SUCCESS: 'Get appointments successfully',
   DELETE_APPOINTMENT_SUCCESS: 'Delete appointment successfully'
 } as const
+
+export const STAFF_SCHEDULE_MESSAGES = {
+  CREATE_STAFF_SCHEDULE_SUCCESS: 'Create staff schedule successfully',
+  UPDATE_STAFF_SCHEDULE_SUCCESS: 'Update staff schedule successfully',
+  GET_STAFF_SCHEDULE_SUCCESS: 'Get staff schedule successfully',
+  GET_STAFF_SCHEDULES_SUCCESS: 'Get staff schedules successfully',
+  DELETE_STAFF_SCHEDULE_SUCCESS: 'Delete staff schedule successfully'
+} as const

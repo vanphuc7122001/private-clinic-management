@@ -7,6 +7,8 @@ import categoryRouters from './caterogy.routes'
 import newsRouters from './news.routes'
 import doctorRouters from './doctor.routes'
 import medicaRecordRouters from './medicalRecord.routes'
+import appointmentRouters from './appointment.routes'
+import staffScheduleRouters from './staffSchedule.routes'
 
 export const initRoutes = (baseUrl: string, app: Express) => {
   app.use(`${baseUrl}/roles`, roleRouters)
@@ -17,6 +19,8 @@ export const initRoutes = (baseUrl: string, app: Express) => {
   app.use(`${baseUrl}/news`, newsRouters)
   app.use(`${baseUrl}/doctors`, doctorRouters)
   app.use(`${baseUrl}/medical-records`, medicaRecordRouters)
+  app.use(`${baseUrl}/staff-schedules`, staffScheduleRouters)
+  app.use(`${baseUrl}/appointments`, appointmentRouters)
 }
 
 // https://private-clinnic-medical.s3.ap-southeast-1.amazonaws.com/images/hero-img1.jpg

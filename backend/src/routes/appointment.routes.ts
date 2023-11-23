@@ -7,7 +7,6 @@ import {
   getAppointmentsController,
   updateAppointmentController
 } from '~/controllers/appointment.controllers'
-
 import { checkPermission } from '~/middlewares/common.middlewares'
 import { accessTokenValidator } from '~/middlewares/user.middlewares'
 import { wrapRequestHandler } from '~/utils/handlers'
