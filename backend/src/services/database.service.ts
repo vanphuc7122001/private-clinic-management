@@ -29,8 +29,12 @@ class DatabaseService {
     return this.instance.role
   }
 
-  get posts() {
-    return this.instance.post
+  get news() {
+    return this.instance.news
+  }
+
+  get caterogies() {
+    return this.instance.category
   }
 
   get medicalRecords() {

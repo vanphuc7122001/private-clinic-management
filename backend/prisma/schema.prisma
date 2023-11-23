@@ -35,7 +35,7 @@ model User {
   updated_at            DateTime         @updatedAt
   medicalRecordDoctor   MedicalRecord[]  @relation("medical_records_doctor")
   medicalRecordPatient  MedicalRecord[]  @relation("medical_records_patient")
-  post                  Post[]
+  news                  News[]
   appointmentDoctor     Appointment[]    @relation("appointment_doctor")
   appointmentPatient    Appointment[]    @relation("appointment_patient")
   staffSchedule         StaffSchedules[] @relation("staff_schedules")
@@ -78,19 +78,29 @@ model MedicalRecord {
   @@map("medical_records")
 }
 
-model Post {
+model Category {
+  id   String @id @default(uuid())
+  name String
+  News News[] @relation("category")
+
+  @@map("categories")
+}
+
+model News {
   id          String @id @default(uuid())
   title       String @db.VarChar(200)
   images      String @db.VarChar(200)
   description String @db.Text
   content     String @db.Text
   user_id     String @db.VarChar(200)
+  category_id String
 
+  category   Category @relation(name: "category", fields: [category_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  @@map("posts")
+  @@map("news")
 }
 
 model Appointment {

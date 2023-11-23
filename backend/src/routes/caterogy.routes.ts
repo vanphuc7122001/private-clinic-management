@@ -1,35 +1,36 @@
-import { Roles } from '~/constants/enum'
 import { Router } from 'express'
+import { Roles } from '~/constants/enum'
+import {
+  createCaterogyController,
+  deleteCaterogy,
+  getCaterogiesController,
+  updateCaterogy
+} from '~/controllers/caterogy.controlles'
+import {
+  createCaterogyValidator,
+  deleteCaterogyValidator,
+  updateCaterogyValidator
+} from '~/middlewares/caterogy.middlewares'
 import { checkPermission } from '~/middlewares/common.middlewares'
 import { accessTokenValidator } from '~/middlewares/user.middlewares'
 import { wrapRequestHandler } from '~/utils/handlers'
-import {
-  createSpecializationValidator,
-  deleteSpecializationValidator,
-  updateSpecializationValidator
-} from '~/middlewares/specialization.middlewares'
-import {
-  createSpecializationController,
-  deleteSpecialization,
-  getCaterogiesController,
-  updateSpecialization
-} from '~/controllers/specialization.controlles'
 
-const specializationRouters = Router()
+const categoryRouters = Router()
 
 /**
- * Description : Create a new specialization
+ * Description : Create a new category
  * Path: /
  * Method : Post
  * Headers : Bearer <access_token>
  * Permissions : Admin
  */
-specializationRouters.post(
+
+categoryRouters.post(
   '/',
   accessTokenValidator,
   checkPermission([Roles.ADMIN]),
-  createSpecializationValidator,
-  wrapRequestHandler(createSpecializationController)
+  createCaterogyValidator,
+  wrapRequestHandler(createCaterogyController)
 )
 
 /**
@@ -39,7 +40,8 @@ specializationRouters.post(
  * Headers : Bearer <access_token>
  * Permissions : Admin
  */
-specializationRouters.post(
+
+categoryRouters.post(
   '/',
   accessTokenValidator,
   checkPermission([Roles.ADMIN]),
@@ -47,33 +49,35 @@ specializationRouters.post(
 )
 
 /**
- * Description : Update a specialization
+ * Description : Update a category
  * Path: /:id
  * Method : PUT
  * Headers : Bearer <access_token>
  * Permissions : Admin
  */
-specializationRouters.put(
+
+categoryRouters.put(
   '/:id',
   accessTokenValidator,
   checkPermission([Roles.ADMIN]),
-  updateSpecializationValidator,
-  wrapRequestHandler(updateSpecialization)
+  updateCaterogyValidator,
+  wrapRequestHandler(updateCaterogy)
 )
 
 /**
- * Description : Delete a specialization
+ * Description : Delete a category
  * Path: /:id
  * Method : DELETE
  * Headers : Bearer <access_token>
  * Permissions : Admin
  */
-specializationRouters.delete(
+
+categoryRouters.delete(
   '/:id',
   accessTokenValidator,
   checkPermission([Roles.ADMIN]),
-  deleteSpecializationValidator,
-  wrapRequestHandler(deleteSpecialization)
+  deleteCaterogyValidator,
+  wrapRequestHandler(deleteCaterogy)
 )
 
-export default specializationRouters
+export default categoryRouters

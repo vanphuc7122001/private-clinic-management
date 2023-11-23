@@ -15,7 +15,7 @@ export const isLength = ({ name, field, min, max }: { name: string; field: strin
 }
 
 // check role
-export const checPermission = (arrRole: Roles[]) => (req: Request, res: Response, next: NextFunction) => {
+export const checkPermission = (arrRole: Roles[]) => (req: Request, res: Response, next: NextFunction) => {
   const { role } = req.decoded_authorization as TokenPayload
   const isPermission = arrRole.some((item) => item === role)
   if (!isPermission) {

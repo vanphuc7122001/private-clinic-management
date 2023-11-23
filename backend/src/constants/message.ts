@@ -57,3 +57,25 @@ export const MEDIA_MESSAGES = {
   ERROR_WHEN_DELETE_IMAGE: 'Err deleting image',
   ERROR_WHEN_UPDATE_IMAGE: 'Error when updating image'
 } as const
+
+export const CATEROGY_MESSAGES = {
+  CATEROGY_MUST_BE_STRING: 'Category must be a string',
+  CATEROGY_IS_REQUIRED: 'Category is required',
+  CATEROGY_ALREADY_EXISTS: 'Category already exists',
+  CREATE_CATEROGY_SUCCESS: 'Create category successfully',
+  GET_ALL_CATEROGIES_SUCCESS: 'Get all categories successfully',
+  UPDATE_CATEROGY_SUCCESS: 'Update category successfully',
+  DELETE_CATEROGY_SUCCESS: 'Delete category successfully',
+  ID_IS_REQUIRED: 'ID is required'
+} as const
+
+export const SPECIALLIZATION_MESSAGES = {
+  SPECIALIZATION_MUST_BE_STRING: 'Specialization must be a string',
+  SPECIALIZATION_IS_REQUIRED: 'Specialization is required',
+  SPECIALIZATION_ALREADY_EXISTS: 'Specialization already exists',
+  CREATE_SPECIALIZATION_SUCCESS: 'Create specialization successfully',
+  GET_ALL_SPECIALIZATIONS_SUCCESS: 'Get all specializations successfully',
+  UPDATE_SPECIALIZATION_SUCCESS: 'Update specialization successfully',
+  DELETE_SPECIALIZATION_SUCCESS: 'Delete specialization successfully',
+  ID_IS_REQUIRED: 'ID is required'
+} as const
