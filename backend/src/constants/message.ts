@@ -150,3 +150,11 @@ export const PRESCRIPTION_MESSAGES = {
   GET_PRESCRIPTIONS_SUCCESS: 'Get prescriptions successfully',
   DELETE_PRESCRIPTION_SUCCESS: 'Delete prescription successfully'
 } as const
+
+export const PRESCRIPTION_DETAIL_MESSAGES = {
+  CREATE_PRESCRIPTION_DETAIL_SUCCESS: 'Create prescription detail successfully',
+  UPDATE_PRESCRIPTION_DETAIL_SUCCESS: 'Update prescription detail successfully',
+  GET_PRESCRIPTION_DETAIL_SUCCESS: 'Get prescription detail successfully',
+  GET_PRESCRIPTION_DETAILS_SUCCESS: 'Get prescription details successfully',
+  DELETE_PRESCRIPTION_DETAIL_SUCCESS: 'Delete prescription successfully'
+} as const
