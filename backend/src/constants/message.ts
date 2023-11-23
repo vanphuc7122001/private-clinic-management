@@ -142,3 +142,11 @@ export const BILL_MESSAGES = {
   GET_BILLS_SUCCESS: 'Get bills successfully',
   DELETE_BILL_SUCCESS: 'Delete bill successfully'
 } as const
+
+export const PRESCRIPTION_MESSAGES = {
+  CREATE_PRESCRIPTION_SUCCESS: 'Create prescription successfully',
+  UPDATE_PRESCRIPTION_SUCCESS: 'Update prescription successfully',
+  GET_PRESCRIPTION_SUCCESS: 'Get prescription successfully',
+  GET_PRESCRIPTIONS_SUCCESS: 'Get prescriptions successfully',
+  DELETE_PRESCRIPTION_SUCCESS: 'Delete prescription successfully'
+} as const
