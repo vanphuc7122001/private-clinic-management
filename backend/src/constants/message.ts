@@ -110,3 +110,11 @@ export const DOCTOR_MESSAGES = {
   GET_DOCTORS_SUCCESS: 'Get doctors successfully',
   DELETE_DOCTOR_SUCCESS: 'Delete doctor successfully'
 } as const
+
+export const MEDICAL_RECORD_MESSAGES = {
+  CREATE_MEDICAL_RECORD_SUCCESS: 'Create medical record successfully',
+  UPDATE_MEDICAL_RECORD_SUCCESS: 'Update medical record successfully',
+  GET_MEDICAL_RECORD_SUCCESS: 'Get medical record successfully',
+  GET_MEDICAL_RECORDS_SUCCESS: 'Get medical records successfully',
+  DELETE_MEDICAL_RECORD_SUCCESS: 'Delete medical record successfully'
+} as const

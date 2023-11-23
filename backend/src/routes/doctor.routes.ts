@@ -66,7 +66,7 @@ doctorRouters.patch(
  * Headers: Bearer <access_token>
  * Body:
  */
-doctorRouters.patch(
+doctorRouters.delete(
   '/:id',
   accessTokenValidator,
   checkPermission([Roles.ADMIN]),
