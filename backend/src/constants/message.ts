@@ -134,3 +134,11 @@ export const STAFF_SCHEDULE_MESSAGES = {
   GET_STAFF_SCHEDULES_SUCCESS: 'Get staff schedules successfully',
   DELETE_STAFF_SCHEDULE_SUCCESS: 'Delete staff schedule successfully'
 } as const
+
+export const BILL_MESSAGES = {
+  CREATE_BILL_SUCCESS: 'Create bill successfully',
+  UPDATE_BILL_SUCCESS: 'Update bill successfully',
+  GET_BILL_SUCCESS: 'Get bill successfully',
+  GET_BILLS_SUCCESS: 'Get bills successfully',
+  DELETE_BILL_SUCCESS: 'Delete bill successfully'
+} as const
