@@ -79,3 +79,19 @@ export const SPECIALLIZATION_MESSAGES = {
   DELETE_SPECIALIZATION_SUCCESS: 'Delete specialization successfully',
   ID_IS_REQUIRED: 'ID is required'
 } as const
+
+export const NEWS_MESSAGES = {
+  CREATE_NEWS_SUCCESS: 'Create news successfully',
+  TITLE_MUST_BE_A_STRING: 'Title must be a string',
+  TITLE_IS_REQUIRED: 'Title is required',
+  IMAGES_MUST_BE_A_STRING: 'Images must be a string',
+  IMAGES_IS_REQUIRED: 'Images is required',
+  DESC_MUST_BE_A_STRING: 'Desc must be a string',
+  DESC_IS_REQUIRED: 'Desc is required',
+  CONTENT_MUST_BE_A_STRING: 'Content must be a string',
+  CONTENT_IS_REQUIRED: 'Content is required',
+  GET_ALL_NEWS_SUCCESS: 'Get all news articles successfully',
+  GET_NEWS_SUCCESS: 'Get news articles successfully',
+  UPDATE_NEWS_SUCCESS: 'Update news articles successfully',
+  DELETE_NEWS_SUCCESS: 'Delete news articles successfully'
+} as const
