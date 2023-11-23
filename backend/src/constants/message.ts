@@ -118,3 +118,11 @@ export const MEDICAL_RECORD_MESSAGES = {
   GET_MEDICAL_RECORDS_SUCCESS: 'Get medical records successfully',
   DELETE_MEDICAL_RECORD_SUCCESS: 'Delete medical record successfully'
 } as const
+
+export const APPOINTMENT_MESSAGES = {
+  CREATE_APPOINTMENT_SUCCESS: 'Create appointment successfully',
+  UPDATE_APPOINTMENT_SUCCESS: 'Update appointment successfully',
+  GET_APPOINTMENT_SUCCESS: 'Get appointment successfully',
+  GET_APPOINTMENTS_SUCCESS: 'Get appointments successfully',
+  DELETE_APPOINTMENT_SUCCESS: 'Delete appointment successfully'
+} as const
