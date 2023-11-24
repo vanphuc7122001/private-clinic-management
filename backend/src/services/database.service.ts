@@ -49,8 +49,8 @@ class DatabaseService {
     return this.instance.staffSchedules
   }
 
-  get specializations() {
-    return this.instance.specializations
+  get medicalServices() {
+    return this.instance.medicalService
   }
 
   get doctorProfiles() {

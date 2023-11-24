@@ -8,6 +8,7 @@ import express from 'express'
 import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
 import morgan from 'morgan'
+import { initFolder } from './utils/file'
 
 const app = express()
 
@@ -32,6 +33,8 @@ app.use(morgan('dev'))
 
 //inital routes
 initRoutes('/api/v1', app)
+// inital folders
+initFolder()
 
 // check connect database
 databaseService.Connect()

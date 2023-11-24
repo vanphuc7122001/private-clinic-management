@@ -1,3 +1,4 @@
+import { Genders } from '~/constants/enum'
 import { ObjectId } from '~/utils/commons'
 
 interface UserType {
@@ -9,8 +10,8 @@ interface UserType {
   phone: string
   email?: string
   password?: string
-  gender: string
-  is_patient: boolean
+  gender?: string
+  is_patient?: boolean
   forgot_password_token?: string
   role_id: string
   created_at?: Date
@@ -43,8 +44,8 @@ export default class User {
     this.phone = user.phone
     this.email = user.email
     this.password = user.password
-    this.gender = user.gender
-    this.is_patient = user.is_patient || true
+    this.gender = user.gender || Genders.Other
+    this.is_patient = user.is_patient || false
     this.forgot_password_token = user.forgot_password_token || ''
     this.role_id = user.role_id
     this.created_at = user.created_at || date
