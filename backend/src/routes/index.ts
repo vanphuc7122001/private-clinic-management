@@ -1,6 +1,5 @@
 import { Express } from 'express'
 import roleRouters from './role.routes'
-import specializationRouters from './specialization.routes'
 import userRouters from './user.routes'
 import mediaRouters from './media.routes'
 import categoryRouters from './caterogy.routes'
@@ -10,10 +9,11 @@ import medicaRecordRouters from './medicalRecord.routes'
 import appointmentRouters from './appointment.routes'
 import staffScheduleRouters from './staffSchedule.routes'
 import prescriptionRouters from './prescription.routes'
+import medicalServiceRouters from './medicalService.routes'
 
 export const initRoutes = (baseUrl: string, app: Express) => {
   app.use(`${baseUrl}/roles`, roleRouters)
-  app.use(`${baseUrl}/specializations`, specializationRouters)
+  app.use(`${baseUrl}/medical-services`, medicalServiceRouters)
   app.use(`${baseUrl}/users`, userRouters)
   app.use(`${baseUrl}/medias`, mediaRouters)
   app.use(`${baseUrl}/caterogies`, categoryRouters)

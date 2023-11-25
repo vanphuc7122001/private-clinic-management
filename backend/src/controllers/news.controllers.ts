@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { NEWS_MESSAGES } from '~/constants/message'
-import { CreateNewsReqBody } from '~/models/requests/News.request'
+import { CreateNewsReqBody } from '~/models/requests/News.requests'
 export const createNewsController = (req: Request<any, any, CreateNewsReqBody>, res: Response, next: NextFunction) => {
   res.json({
     message: NEWS_MESSAGES.CREATE_NEWS_SUCCESS

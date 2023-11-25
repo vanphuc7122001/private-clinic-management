@@ -50,7 +50,7 @@ class DatabaseService {
   }
 
   get medicalServices() {
-    return this.instance.medicalService
+    return this.instance.service
   }
 
   get doctorProfiles() {

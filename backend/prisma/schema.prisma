@@ -64,22 +64,48 @@ model RefreshToken {
 }
 
 model MedicalRecord {
-  id             String   @id @default(uuid())
-  diagnosis      String   @db.VarChar(1000)
-  note           String   @db.VarChar(1000)
-  doctor_id      String   @db.VarChar(200)
-  appointment_id String   @unique @db.VarChar(200)
-  patient_id     String   @db.VarChar(200)
-  date           DateTime
-  fee            String
+  id              String   @id @default(uuid())
+  diagnosis       String   @db.VarChar(1000)
+  note            String   @db.VarChar(1000)
+  doctor_id       String   @db.VarChar(200)
+  appointment_id  String?  @unique @db.VarChar(200)
+  prescription_id String?  @unique @db.VarChar(200)
+  patient_id      String   @db.VarChar(200)
+  date            DateTime
 
-  appointments Appointment? @relation(name: "appointment_medical_record", fields: [appointment_id], references: [id])
-  doctor       User         @relation(name: "medical_records_doctor", fields: [doctor_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  patient      User         @relation(name: "medical_records_patient", fields: [patient_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  created_at   DateTime     @default(now())
-  updated_at   DateTime     @updatedAt
+  prescriptions Prescriptions?         @relation(name: "medical_record_prescription", fields: [prescription_id], references: [id])
+  services      MedicalRecordService[]
+  appointments  Appointment?           @relation(name: "appointment_medical_record", fields: [appointment_id], references: [id])
+  doctor        User                   @relation(name: "medical_records_doctor", fields: [doctor_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  patient       User                   @relation(name: "medical_records_patient", fields: [patient_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  created_at    DateTime               @default(now())
+  updated_at    DateTime               @updatedAt
 
   @@map("medical_records")
+}
+
+model Service {
+  id    String @id @default(uuid())
+  name  String @db.VarChar(200)
+  price String @db.VarChar(200)
+
+  medicalRecordServices MedicalRecordService[]
+  created_at            DateTime               @default(now())
+  updated_at            DateTime               @updatedAt
+
+  @@map("services")
+}
+
+model MedicalRecordService {
+  id                String @id @default(uuid())
+  medical_record_id String
+  serviceId         String
+
+  medicalRecord MedicalRecord @relation(fields: [medical_record_id], references: [id])
+  service       Service       @relation(fields: [serviceId], references: [id])
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model Category {
@@ -107,42 +133,32 @@ model News {
   @@map("news")
 }
 
-model MedicalService {
-  id          String        @id @default(uuid())
-  name        String        @db.VarChar(200)
-  price       String        @db.VarChar(200)
-  appointment Appointment[] @relation(name: "appointment_medic_service")
-
-  @@map("medical_services")
-}
-
 model Appointment {
   id                 String   @id @default(uuid())
   date               DateTime
   doctor_id          String   @db.VarChar(200)
   patient_id         String   @db.VarChar(200)
-  medical_service_id String?  @db.VarChar(200)
+  medical_service_id String   @db.VarChar(200)
   status             String
 
-  medicalService MedicalService? @relation(name: "appointment_medic_service", fields: [medical_service_id], references: [id])
-  patient        User            @relation(name: "appointment_patient", fields: [patient_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  doctor         User            @relation(name: "appointment_doctor", fields: [doctor_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  bill           Bill?           @relation("bill_appointment")
-  created_at     DateTime        @default(now())
-  updated_at     DateTime        @updatedAt
-  medicalRecord  MedicalRecord?  @relation(name: "appointment_medical_record")
+  patient       User           @relation(name: "appointment_patient", fields: [patient_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  doctor        User           @relation(name: "appointment_doctor", fields: [doctor_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  bill          Bill?          @relation("bill_appointment")
+  created_at    DateTime       @default(now())
+  updated_at    DateTime       @updatedAt
+  medicalRecord MedicalRecord? @relation(name: "appointment_medical_record")
 
   @@map("appointments")
 }
 
 model StaffSchedules {
-  id      String   @id @default(uuid())
-  date    DateTime @db.Date
-  user_id String   @db.VarChar(200)
-  shift   String   @db.VarChar(200)
-  note    String?  @db.VarChar(200)
+  id       String   @id @default(uuid())
+  date     DateTime @db.Date
+  staff_id String   @db.VarChar(200)
+  shift    String   @db.VarChar(200)
+  note     String?  @db.VarChar(200)
 
-  user       User     @relation(name: "staff_schedules", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user       User     @relation(name: "staff_schedules", fields: [staff_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
@@ -150,10 +166,10 @@ model StaffSchedules {
 }
 
 model DoctorProfile {
-  doctor_id         String @unique @db.VarChar(200)
-  specialization_id String @unique @db.VarChar(200)
-  certification     String @db.VarChar(200)
-  expricence        String @db.VarChar(200)
+  doctor_id     String @unique @db.VarChar(200)
+  certification String @db.VarChar(200)
+  expricence    String @db.VarChar(200)
+  education     String @db.VarChar(200)
 
   doctor     User     @relation(name: "doctor_profiles", fields: [doctor_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at DateTime @default(now())
@@ -193,6 +209,7 @@ model Prescriptions {
   created_at          DateTime              @default(now())
   updated_at          DateTime              @updatedAt
   bill                Bill?                 @relation(name: "bill_prescription")
+  medicalRecord       MedicalRecord?        @relation(name: "medical_record_prescription")
 
   @@map("prescriptions")
 }

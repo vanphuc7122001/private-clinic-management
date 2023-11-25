@@ -4,6 +4,8 @@ import { TokenPayload } from '~/models/requests/User.requests'
 import { ErrorWithStatus } from '~/models/Errors'
 import { USER_MESSAGES } from '~/constants/message'
 import HTTP_STATUS from '~/constants/httpStatus'
+import { validate } from '~/utils/validation'
+import { checkSchema } from 'express-validator'
 export const isLength = ({ name, field, min, max }: { name: string; field: string; min: number; max: number }) => {
   return {
     options: {
@@ -29,3 +31,35 @@ export const checkPermission = (arrRole: Roles[]) => (req: Request, res: Respons
   }
   return next()
 }
+
+export const paginationValidator = validate(
+  checkSchema(
+    {
+      limit: {
+        isNumeric: true,
+        custom: {
+          options: async (value, { req }) => {
+            const num = Number(value)
+            if (num > 100 || num < 1) {
+              throw new Error('1 <= limit <= 100')
+            }
+            return true
+          }
+        }
+      },
+      page: {
+        isNumeric: true,
+        custom: {
+          options: async (value, { req }) => {
+            const num = Number(value)
+            if (num < 1) {
+              throw new Error('page >= 1')
+            }
+            return true
+          }
+        }
+      }
+    },
+    ['query']
+  )
+)

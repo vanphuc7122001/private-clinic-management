@@ -1,8 +1,9 @@
 import { useRoutes } from 'react-router-dom'
 import DashboardLayout from '~/layouts/DashboardLayout/DashboardLayout'
-import HomeLayout from '~/layouts/HomeLayouts'
 import Login from '~/pages/Login'
 import Signup from '~/pages/Signup'
+import CustomerLayOut from '~/layouts/CustomerLayout'
+import Home from '~/pages/Customer/Home'
 
 export default function useRouteElements() {
   const element = useRoutes([
@@ -14,13 +15,21 @@ export default function useRouteElements() {
       path: '/signup',
       element: <Signup />
     },
+    // dashboard layout
     {
       path: '/dashboard',
       element: <DashboardLayout />
     },
+    // Customer layout
     {
       path: '/',
-      element: <HomeLayout />
+      element: <CustomerLayOut />,
+      children: [
+        {
+          path: '/',
+          element: <Home />
+        }
+      ]
     }
   ])
 

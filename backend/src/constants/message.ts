@@ -69,15 +69,18 @@ export const CATEROGY_MESSAGES = {
   ID_IS_REQUIRED: 'ID is required'
 } as const
 
-export const SPECIALLIZATION_MESSAGES = {
-  SPECIALIZATION_MUST_BE_STRING: 'Specialization must be a string',
-  SPECIALIZATION_IS_REQUIRED: 'Specialization is required',
-  SPECIALIZATION_ALREADY_EXISTS: 'Specialization already exists',
-  CREATE_SPECIALIZATION_SUCCESS: 'Create specialization successfully',
-  GET_ALL_SPECIALIZATIONS_SUCCESS: 'Get all specializations successfully',
-  UPDATE_SPECIALIZATION_SUCCESS: 'Update specialization successfully',
-  DELETE_SPECIALIZATION_SUCCESS: 'Delete specialization successfully',
-  ID_IS_REQUIRED: 'ID is required'
+export const MEDICAL_SERVICE_MESSAGES = {
+  NAME_ALREADy_EXISTS: 'Medical service already exists',
+  CREATE_MEDICAL_SERVICE_SUCCESS: 'Create Medical service successfully',
+  GET_ALL_MEDICAL_SERVICES_SUCCESS: 'Get all Medical services successfully',
+  UPDATE_MEDICAL_SERVICE_SUCCESS: 'Update Medical service successfully',
+  DELETE_MEDICAL_SERVICE_SUCCESS: 'Delete Medical service successfully',
+  ID_IS_REQUIRED: 'ID is required',
+  NAME_MUST_BE_A_STRING: 'Name must be a string',
+  NAME_IS_REQUIRED: 'Name must be a string',
+  PRICE_MUST_BE_STRING: 'Price must be a string',
+  PRICE_IS_REQUIRED: 'Price is required',
+  SERVICE_NOT_FOUND: 'service not found'
 } as const
 
 export const NEWS_MESSAGES = {
