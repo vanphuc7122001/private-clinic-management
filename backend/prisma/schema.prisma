@@ -57,7 +57,7 @@ model RefreshToken {
   iat        DateTime
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  user       User?    @relation(fields: [userId], references: [id])
+  user       User?    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId     String?
 
   @@map("refresh_tokens")
@@ -73,9 +73,9 @@ model MedicalRecord {
   patient_id      String   @db.VarChar(200)
   date            DateTime
 
-  prescriptions Prescriptions?         @relation(name: "medical_record_prescription", fields: [prescription_id], references: [id])
+  prescriptions Prescriptions?         @relation(name: "medical_record_prescription", fields: [prescription_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   services      MedicalRecordService[]
-  appointments  Appointment?           @relation(name: "appointment_medical_record", fields: [appointment_id], references: [id])
+  appointments  Appointment?           @relation(name: "appointment_medical_record", fields: [appointment_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   doctor        User                   @relation(name: "medical_records_doctor", fields: [doctor_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   patient       User                   @relation(name: "medical_records_patient", fields: [patient_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at    DateTime               @default(now())
@@ -101,8 +101,8 @@ model MedicalRecordService {
   medical_record_id String
   serviceId         String
 
-  medicalRecord MedicalRecord @relation(fields: [medical_record_id], references: [id])
-  service       Service       @relation(fields: [serviceId], references: [id])
+  medicalRecord MedicalRecord @relation(fields: [medical_record_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  service       Service       @relation(fields: [serviceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -190,7 +190,7 @@ model Bill {
   prescription_id String @unique @db.VarChar(200)
   amount          String @db.VarChar(200)
 
-  prescription Prescriptions? @relation(name: "bill_prescription", fields: [prescription_id], references: [id])
+  prescription Prescriptions? @relation(name: "bill_prescription", fields: [prescription_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   doctor       User           @relation(name: "bill_doctor", fields: [doctor_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   patient      User           @relation(name: "bill_patient", fields: [patient_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   appointment  Appointment    @relation(name: "bill_appointment", fields: [appointment_id], references: [id], onDelete: Cascade, onUpdate: Cascade)

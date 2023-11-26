@@ -7,8 +7,8 @@ import {
   getNewsController,
   updateNewsController
 } from '~/controllers/news.controllers'
-import { checkPermission } from '~/middlewares/common.middlewares'
-import { createNewsValidator, updateNewsValidator } from '~/middlewares/news.middlewares'
+import { checkPermission, paginationValidator } from '~/middlewares/common.middlewares'
+import { createNewsValidator, getOrDeleteNewsValidator, updateNewsValidator } from '~/middlewares/news.middlewares'
 import { accessTokenValidator } from '~/middlewares/user.middlewares'
 import { wrapRequestHandler } from '~/utils/handlers'
 
@@ -36,7 +36,13 @@ newsRouters.post(
  * Headers : Bearer <access_token>
  *
  */
-newsRouters.get('/', accessTokenValidator, checkPermission([Roles.ADMIN]), wrapRequestHandler(getAllNewsController))
+newsRouters.get(
+  '/',
+  accessTokenValidator,
+  checkPermission([Roles.ADMIN, Roles.PATIENT]),
+  paginationValidator,
+  wrapRequestHandler(getAllNewsController)
+)
 
 /**
  * Description : Get news
@@ -45,7 +51,13 @@ newsRouters.get('/', accessTokenValidator, checkPermission([Roles.ADMIN]), wrapR
  * Headers : Bearer <access_token>
  * Params : {id: string}
  */
-newsRouters.get('/:id', accessTokenValidator, checkPermission([Roles.ADMIN]), wrapRequestHandler(getNewsController))
+newsRouters.get(
+  '/:id',
+  accessTokenValidator,
+  checkPermission([Roles.ADMIN, Roles.PATIENT]),
+  getOrDeleteNewsValidator,
+  wrapRequestHandler(getNewsController)
+)
 
 /**
  * Description : Delete news
@@ -58,6 +70,7 @@ newsRouters.delete(
   '/:id',
   accessTokenValidator,
   checkPermission([Roles.ADMIN]),
+  getOrDeleteNewsValidator,
   wrapRequestHandler(deleteNewsController)
 )
 
@@ -69,7 +82,7 @@ newsRouters.delete(
  * Params : {id: string}
  * Body : UpdateNewsReqBody
  */
-newsRouters.patch(
+newsRouters.put(
   '/:id',
   accessTokenValidator,
   checkPermission([Roles.ADMIN]),

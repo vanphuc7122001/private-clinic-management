@@ -34,7 +34,10 @@ const nameSchema: ParamSchema = {
 
 const idSchema: ParamSchema = {
   notEmpty: {
-    errorMessage: new ErrorWithStatus({ message: CATEROGY_MESSAGES.ID_IS_REQUIRED, status: HTTP_STATUS.BAD_REQUEST })
+    errorMessage: new ErrorWithStatus({
+      message: CATEROGY_MESSAGES.ID_IS_REQUIRED,
+      status: HTTP_STATUS.BAD_REQUEST
+    })
   },
   custom: {
     options: async (value) => {

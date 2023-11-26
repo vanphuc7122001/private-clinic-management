@@ -72,11 +72,11 @@ export const stringEmptySchema = ({
   messageEmpty: string
 }): ParamSchema => {
   return {
-    isString: {
-      errorMessage: messageString
-    },
     notEmpty: {
       errorMessage: messageEmpty
+    },
+    isString: {
+      errorMessage: messageString
     },
     trim: true
   }

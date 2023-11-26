@@ -97,7 +97,10 @@ export const NEWS_MESSAGES = {
   GET_ALL_NEWS_SUCCESS: 'Get all news articles successfully',
   GET_NEWS_SUCCESS: 'Get news articles successfully',
   UPDATE_NEWS_SUCCESS: 'Update news articles successfully',
-  DELETE_NEWS_SUCCESS: 'Delete news articles successfully'
+  DELETE_NEWS_SUCCESS: 'Delete news articles successfully',
+  CATEROGY_NOT_FOUND: 'Caterogy not found',
+  ID_IS_REQUIRED: 'ID is required',
+  NEWS_NOT_FOUND: 'News not found'
 } as const
 
 export const MEDICINE_MESSAGES = {
