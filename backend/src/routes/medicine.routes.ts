@@ -1,7 +1,8 @@
+import { getMedicinesController } from './../controllers/medicine.controllers'
 import { Router } from 'express'
 import mediaRouters from './media.routes'
 import { accessTokenValidator } from '~/middlewares/user.middlewares'
-import { checkPermission } from '~/middlewares/common.middlewares'
+import { checkPermission, paginationValidator } from '~/middlewares/common.middlewares'
 import { Roles } from '~/constants/enum'
 import { wrapRequestHandler } from '~/utils/handlers'
 import {
@@ -9,6 +10,11 @@ import {
   deleteMedicineController,
   updateMedicineController
 } from '~/controllers/medicine.controllers'
+import {
+  createMedicineValidator,
+  deleteMedicineValidator,
+  updateMedicineValidator
+} from '~/middlewares/medicine.middlewares'
 
 const medicineRouters = Router()
 
@@ -24,6 +30,7 @@ medicineRouters.post(
   '/',
   accessTokenValidator,
   checkPermission([Roles.PHARMACIST]),
+  createMedicineValidator,
   wrapRequestHandler(createMedicineController)
 )
 
@@ -35,10 +42,11 @@ medicineRouters.post(
  * Body: UpdateMedicineReqBody
  */
 
-medicineRouters.patch(
+medicineRouters.put(
   '/:id',
   accessTokenValidator,
   checkPermission([Roles.PHARMACIST]),
+  updateMedicineValidator,
   wrapRequestHandler(updateMedicineController)
 )
 
@@ -54,7 +62,8 @@ medicineRouters.get(
   '/',
   accessTokenValidator,
   checkPermission([Roles.PHARMACIST]),
-  wrapRequestHandler(updateMedicineController)
+  paginationValidator,
+  wrapRequestHandler(getMedicinesController)
 )
 
 /**
@@ -65,11 +74,12 @@ medicineRouters.get(
  *
  */
 
-medicineRouters.get(
+medicineRouters.delete(
   '/:id',
   accessTokenValidator,
   checkPermission([Roles.PHARMACIST]),
+  deleteMedicineValidator,
   wrapRequestHandler(deleteMedicineController)
 )
 
-export default mediaRouters
+export default medicineRouters

@@ -1,25 +1,7 @@
-import { ParamSchema, checkSchema } from 'express-validator'
+import { checkSchema } from 'express-validator'
 import { NEWS_MESSAGES } from '~/constants/message'
 import { validate } from '~/utils/validation'
-import { isLength } from './common.middlewares'
-
-const stringEmptySchema = ({
-  messageString,
-  messageEmpty
-}: {
-  messageString: string
-  messageEmpty: string
-}): ParamSchema => {
-  return {
-    isString: {
-      errorMessage: messageString
-    },
-    notEmpty: {
-      errorMessage: messageEmpty
-    },
-    trim: true
-  }
-}
+import { isLength, stringEmptySchema } from './common.middlewares'
 
 export const createNewsValidator = validate(
   checkSchema(

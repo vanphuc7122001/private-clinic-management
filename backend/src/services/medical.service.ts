@@ -1,6 +1,7 @@
 import { omit } from 'lodash'
 import MedicalServiceSchema from '~/models/schemas/MedicalService.schema'
 import databaseService from './database.service'
+import { envConfig } from '~/constants/config'
 
 class MedicalService {
   async createMedicalService(payload: { name: string; price: string }) {
@@ -14,8 +15,8 @@ class MedicalService {
   }
 
   async getMedicalServices(payload: { page: string; limit: string; [key: string]: string }) {
-    const page = Number(payload.page) || 1
-    const limit = Number(payload.limit) || 3
+    const page = Number(payload.page) || envConfig.page
+    const limit = Number(payload.limit) || envConfig.limit
     const name = payload.name
     let where = {}
     if (name) {

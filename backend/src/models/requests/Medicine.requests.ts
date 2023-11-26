@@ -1,4 +1,4 @@
-export interface CreateMedicineReqBody {
+export interface MedicineReqBody {
   name: string
   manufacturer: string
   usage: string

@@ -5,7 +5,7 @@ import { ErrorWithStatus } from '~/models/Errors'
 import { USER_MESSAGES } from '~/constants/message'
 import HTTP_STATUS from '~/constants/httpStatus'
 import { validate } from '~/utils/validation'
-import { checkSchema } from 'express-validator'
+import { ParamSchema, checkSchema } from 'express-validator'
 export const isLength = ({ name, field, min, max }: { name: string; field: string; min: number; max: number }) => {
   return {
     options: {
@@ -63,3 +63,21 @@ export const paginationValidator = validate(
     ['query']
   )
 )
+
+export const stringEmptySchema = ({
+  messageString,
+  messageEmpty
+}: {
+  messageString: string
+  messageEmpty: string
+}): ParamSchema => {
+  return {
+    isString: {
+      errorMessage: messageString
+    },
+    notEmpty: {
+      errorMessage: messageEmpty
+    },
+    trim: true
+  }
+}

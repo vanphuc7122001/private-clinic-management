@@ -104,7 +104,21 @@ export const MEDICINE_MESSAGES = {
   CREATE_MEDICINE_SUCCESS: 'Create new medicine successfully',
   UPDATE_MEDICINE_SUCCESS: 'Update medicine successfully',
   DELETE_MEDICINE_SUCCESS: 'Delete medicine successfully',
-  GET_ALL_MEDICINE_SUCCESS: 'Get all medicine successfully'
+  GET_ALL_MEDICINE_SUCCESS: 'Get all medicine successfully',
+  NAME_IS_REQUIRED: 'Name is required',
+  NAME_MUST_BE_A_STRING: 'Name must be a string',
+  MANUFACTURER_MUST_BE_STRING: 'Manufacture must be a string',
+  MANUFACTURER_IS_REQUIRED: 'Manufacture is required',
+  USAGE_MUST_BE_STRING: 'Usage must be a string',
+  USAGE_IS_REQUIRED: 'Usage is required',
+  QUANTITY_MUST_BE_A_STRING: 'Quantity must be a string',
+  QUANTITY_IS_REQUIRED: 'Quantity is required',
+  PRICE_MUST_BE_A_STRING: 'Price must be a string',
+  PRICE_IS_REQUIRED: 'Price is required',
+  PURCHASE_PRICE_MUST_BE_A_STRING: 'Purchase price must be a string',
+  PURCHASE_PRICE_IS_REQUIRED: 'Purchase price is required',
+  ID_IS_REQUIRED: 'ID is required',
+  MEDICINE_NOT_FOUND: 'Medicine not found'
 } as const
 
 export const DOCTOR_MESSAGES = {

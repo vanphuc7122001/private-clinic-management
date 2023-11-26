@@ -10,6 +10,7 @@ import appointmentRouters from './appointment.routes'
 import staffScheduleRouters from './staffSchedule.routes'
 import prescriptionRouters from './prescription.routes'
 import medicalServiceRouters from './medicalService.routes'
+import medicineRouters from './medicine.routes'
 
 export const initRoutes = (baseUrl: string, app: Express) => {
   app.use(`${baseUrl}/roles`, roleRouters)
@@ -17,6 +18,7 @@ export const initRoutes = (baseUrl: string, app: Express) => {
   app.use(`${baseUrl}/users`, userRouters)
   app.use(`${baseUrl}/medias`, mediaRouters)
   app.use(`${baseUrl}/caterogies`, categoryRouters)
+  app.use(`${baseUrl}/medicines`, medicineRouters)
   app.use(`${baseUrl}/news`, newsRouters)
   app.use(`${baseUrl}/doctors`, doctorRouters)
   app.use(`${baseUrl}/medical-records`, medicaRecordRouters)

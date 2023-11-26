@@ -55,5 +55,7 @@ export const envConfig = {
   // SES
   sesFromAddress: process.env.SES_FROM_ADDRESS as string,
   //S3 BUCKET,
-  s3Bucket: process.env.AWS_BUCKET_S3 as string
+  s3Bucket: process.env.AWS_BUCKET_S3 as string,
+  page: Number(process.env.PAGE_DEFAULT as string),
+  limit: Number(process.env.LIMIT_DEFAULT as string)
 }
