@@ -7,13 +7,13 @@ import databaseService from '~/services/database.service'
 import { validate } from '~/utils/validation'
 
 const nameSchema: ParamSchema = {
+  notEmpty: {
+    errorMessage: CATEROGY_MESSAGES.CATEROGY_IS_REQUIRED
+  },
   isString: {
     errorMessage: CATEROGY_MESSAGES.CATEROGY_MUST_BE_STRING
   },
   trim: true,
-  notEmpty: {
-    errorMessage: CATEROGY_MESSAGES.CATEROGY_IS_REQUIRED
-  },
   custom: {
     options: async (value) => {
       const isCaterogy = await databaseService.caterogies.findFirst({
@@ -35,6 +35,23 @@ const nameSchema: ParamSchema = {
 const idSchema: ParamSchema = {
   notEmpty: {
     errorMessage: new ErrorWithStatus({ message: CATEROGY_MESSAGES.ID_IS_REQUIRED, status: HTTP_STATUS.BAD_REQUEST })
+  },
+  custom: {
+    options: async (value) => {
+      const isId = await databaseService.caterogies.findFirst({
+        where: {
+          id: value
+        }
+      })
+      if (!isId) {
+        throw new ErrorWithStatus({
+          message: CATEROGY_MESSAGES.CATEROGY_NOT_FOUND,
+          status: HTTP_STATUS.NOT_FOUND
+        })
+      }
+
+      return true
+    }
   }
 }
 

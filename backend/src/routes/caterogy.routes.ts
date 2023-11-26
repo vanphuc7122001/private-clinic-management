@@ -41,7 +41,7 @@ categoryRouters.post(
  * Permissions : Admin
  */
 
-categoryRouters.post(
+categoryRouters.get(
   '/',
   accessTokenValidator,
   checkPermission([Roles.ADMIN]),

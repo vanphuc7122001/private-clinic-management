@@ -66,7 +66,8 @@ export const CATEROGY_MESSAGES = {
   GET_ALL_CATEROGIES_SUCCESS: 'Get all categories successfully',
   UPDATE_CATEROGY_SUCCESS: 'Update category successfully',
   DELETE_CATEROGY_SUCCESS: 'Delete category successfully',
-  ID_IS_REQUIRED: 'ID is required'
+  ID_IS_REQUIRED: 'ID is required',
+  CATEROGY_NOT_FOUND: 'Category does not exist'
 } as const
 
 export const MEDICAL_SERVICE_MESSAGES = {
