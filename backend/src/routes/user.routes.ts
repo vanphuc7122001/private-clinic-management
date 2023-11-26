@@ -2,6 +2,7 @@ import { Router } from 'express'
 import {
   changePasswordController,
   forgotPasswordController,
+  getListUserController,
   getMeController,
   loginController,
   logoutController,
@@ -11,6 +12,7 @@ import {
   updateMeController,
   verifyForgotPasswordController
 } from '~/controllers/user.controllers'
+import { paginationValidator } from '~/middlewares/common.middlewares'
 import {
   accessTokenValidator,
   changePasswordValidator,
@@ -61,11 +63,19 @@ userRouters.post('/refresh-token', refreshTokenValidator, wrapRequestHandler(ref
 
 /**
  * Description: get me
- * Path : /refresh-token
+ * Path : /me
  * Method : get
  * Headers : Bearer <access_token>
  */
 userRouters.get('/me', accessTokenValidator, wrapRequestHandler(getMeController))
+
+/**
+ * Description: get list user
+ * Path : /
+ * Method : get
+ * Headers : Bearer <access_token>
+ */
+userRouters.get('/', accessTokenValidator, paginationValidator, wrapRequestHandler(getListUserController))
 
 /**
  * Description: change password user

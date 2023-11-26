@@ -20,9 +20,9 @@ export const initRoutes = (baseUrl: string, app: Express) => {
   app.use(`${baseUrl}/caterogies`, categoryRouters)
   app.use(`${baseUrl}/medicines`, medicineRouters)
   app.use(`${baseUrl}/news`, newsRouters)
+  app.use(`${baseUrl}/staff-schedules`, staffScheduleRouters)
   app.use(`${baseUrl}/doctors`, doctorRouters)
   app.use(`${baseUrl}/medical-records`, medicaRecordRouters)
-  app.use(`${baseUrl}/staff-schedules`, staffScheduleRouters)
   app.use(`${baseUrl}/appointments`, appointmentRouters)
   app.use(`${baseUrl}/prescriptions`, prescriptionRouters)
 }

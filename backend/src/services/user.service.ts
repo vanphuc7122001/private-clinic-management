@@ -7,6 +7,9 @@ import { Roles, TokenType } from '~/constants/enum'
 import { envConfig } from '~/constants/config'
 import RefreshToken from '~/models/schemas/RefreshToken.schema'
 import { sendEmailRegister, sendForgotPasswrodEmail } from '~/utils/email'
+import { PaginationQuery } from '~/models/requests/Other.requests'
+import { omit } from 'lodash'
+import { equal } from 'assert'
 
 interface PayloadToken {
   user_id: string
@@ -297,6 +300,53 @@ class UserService {
         ..._payload
       }
     })
+  }
+
+  async getListUser(payload: PaginationQuery) {
+    const page = Number(payload.page as string) || envConfig.page
+    const limit = Number(payload.limit as string) || envConfig.limit
+    const role = payload.role
+    const { ...query } = omit(payload, ['page', 'limit', 'role'])
+    const where: any = {}
+    if (query) {
+      for (const key in query) {
+        const operator =
+          key === 'is_patient'
+            ? { equals: query[key] === 'false' ? false : true }
+            : {
+                contains: query[key]
+              }
+        where[key] = operator
+      }
+    }
+    if (role) {
+      where['roles'] = {
+        name: {
+          contains: role
+        }
+      }
+    }
+    const [total, users] = await Promise.all([
+      databaseService.users.count({
+        where
+      }),
+      databaseService.users.findMany({
+        where,
+        skip: (page - 1) * limit,
+        take: limit,
+        include: {
+          roles: true
+        }
+      })
+    ])
+
+    return {
+      page,
+      limit,
+      users,
+      total_page: Math.ceil(total / limit) || 0,
+      total_record: total || 0
+    }
   }
 }
 

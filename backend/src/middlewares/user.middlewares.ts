@@ -1,7 +1,7 @@
 import { ParamSchema, checkSchema } from 'express-validator'
 import { USER_MESSAGES } from '~/constants/message'
 import { validate } from '~/utils/validation'
-import { isLength } from './common.middlewares'
+import { dateSchema, isLength, stringEmptySchema } from './common.middlewares'
 import { stringEnumToArray, verifyAccessToken } from '~/utils/commons'
 import { Genders } from '~/constants/enum'
 import { Request } from 'express'
@@ -40,12 +40,10 @@ const passwordSchema: ParamSchema = {
 
 const confirmPassSchema = ({ paramsConfirm = 'password' }: { paramsConfirm?: string }): ParamSchema => {
   return {
-    notEmpty: {
-      errorMessage: USER_MESSAGES.CONFIRM_PASSWORD_IS_REQUIRED
-    },
-    isString: {
-      errorMessage: USER_MESSAGES.CONFIRM_PASSWORD_MUST_BE_A_STRING
-    },
+    ...stringEmptySchema({
+      messageEmpty: USER_MESSAGES.CONFIRM_PASSWORD_IS_REQUIRED,
+      messageString: USER_MESSAGES.CONFIRM_PASSWORD_MUST_BE_A_STRING
+    }),
     isLength: isLength({ min: 1, max: 50, field: 'comfirm password', name: 'User' }),
     isStrongPassword: {
       options: {
@@ -127,36 +125,28 @@ const imageSchema: ParamSchema = {
 }
 
 const addressSchema: ParamSchema = {
-  notEmpty: {
-    errorMessage: USER_MESSAGES.ADDRESS_IS_REQUIRED
-  },
-  isString: {
-    errorMessage: USER_MESSAGES.ADDRESS_MUST_BE_STRING
-  },
+  ...stringEmptySchema({
+    messageEmpty: USER_MESSAGES.ADDRESS_IS_REQUIRED,
+    messageString: USER_MESSAGES.ADDRESS_MUST_BE_STRING
+  }),
   isLength: isLength({ min: 1, max: 200, field: 'address', name: 'User' }),
   trim: true
 }
 
 const phoneSchema: ParamSchema = {
-  notEmpty: {
-    errorMessage: USER_MESSAGES.PHONE_IS_REQUIRED
-  },
-  isString: {
-    errorMessage: USER_MESSAGES.PHONE_MUST_BE_STRING
-  },
-  isLength: isLength({ min: 10, max: 15, field: 'address', name: 'User' }),
-  trim: true
+  ...stringEmptySchema({
+    messageEmpty: USER_MESSAGES.PHONE_IS_REQUIRED,
+    messageString: USER_MESSAGES.PHONE_MUST_BE_STRING
+  }),
+  isLength: isLength({ min: 10, max: 15, field: 'address', name: 'User' })
 }
 
 const nameSchema = ({ field, name }: { field: string; name: string }): ParamSchema => {
   return {
-    notEmpty: {
-      errorMessage: USER_MESSAGES.NAME_IS_REQUIRED
-    },
-    isString: {
-      errorMessage: USER_MESSAGES.NAME_MUST_BE_A_STRING
-    },
-    trim: true,
+    ...stringEmptySchema({
+      messageEmpty: USER_MESSAGES.NAME_IS_REQUIRED,
+      messageString: USER_MESSAGES.NAME_MUST_BE_A_STRING
+    }),
     isLength: isLength({ min: 1, max: 100, field, name })
   }
 }
@@ -172,18 +162,10 @@ const genderSchema: ParamSchema = {
   trim: true
 }
 
-const dateOfBirthSchema: ParamSchema = {
-  notEmpty: {
-    errorMessage: USER_MESSAGES.DATE_OF_BIRTH_IS_REQUIRED
-  },
-  isISO8601: {
-    options: {
-      strict: true,
-      strictSeparator: true
-    },
-    errorMessage: USER_MESSAGES.DATE_OF_BIRTH_MUST_BE_ISO8601
-  }
-}
+const dateOfBirthSchema = dateSchema({
+  messageDate: USER_MESSAGES.DATE_OF_BIRTH_MUST_BE_ISO8601,
+  messageEmpty: USER_MESSAGES.DATE_OF_BIRTH_IS_REQUIRED
+})
 
 export const registerValidator = validate(
   checkSchema(
@@ -221,12 +203,6 @@ export const registerValidator = validate(
         optional: true,
         notEmpty: undefined
       },
-      is_patient: {
-        optional: true,
-        isBoolean: {
-          errorMessage: USER_MESSAGES.IS_PATIENT_MUST_BE_A_BOOLEAN
-        }
-      },
       role_id: {
         notEmpty: {
           errorMessage: USER_MESSAGES.ROLE_ID_IS_REQUIRED
@@ -240,6 +216,29 @@ export const registerValidator = validate(
             if (!role) {
               throw new Error(USER_MESSAGES.ROLE_NOT_FOUND)
             }
+            return true
+          }
+        }
+      },
+      is_patient: {
+        optional: true,
+        isBoolean: {
+          errorMessage: USER_MESSAGES.IS_PATIENT_MUST_BE_A_BOOLEAN
+        },
+        custom: {
+          options: async (value, { req }) => {
+            const isCheckRegister = await databaseService.roles.findFirst({
+              select: {
+                name: true
+              },
+              where: {
+                id: req.body.role_id
+              }
+            })
+            if (value === 'true' && isCheckRegister?.name !== 'patient') {
+              throw new Error(USER_MESSAGES.USER_IS_PATIENT_CANNOT_OTHER_ASSINGMENT)
+            }
+
             return true
           }
         }

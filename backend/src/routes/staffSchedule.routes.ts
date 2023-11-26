@@ -2,12 +2,12 @@ import { Router } from 'express'
 import { Roles } from '~/constants/enum'
 import {
   createStaffScheduleController,
-  getStaffScheduleController,
   getStaffSchedulesController,
   updateStaffScheduleController
 } from '~/controllers/staffSchedule.controllers'
 
-import { checkPermission } from '~/middlewares/common.middlewares'
+import { checkPermission, paginationValidator } from '~/middlewares/common.middlewares'
+import { createStaffScheduleValidator, updateStaffScheduleValidator } from '~/middlewares/staffSchedule.middlewares'
 import { accessTokenValidator } from '~/middlewares/user.middlewares'
 import { wrapRequestHandler } from '~/utils/handlers'
 
@@ -18,27 +18,14 @@ const staffScheduleRouters = Router()
  * Path: /
  * Method: POST
  * Headers : Bearer <access_token>
- * Body: CreateDoctorReqBody
+ * Body:
  */
 staffScheduleRouters.post(
   '/',
   accessTokenValidator,
-  checkPermission([Roles.ADMIN]),
+  checkPermission([Roles.ADMIN, Roles.DOCTOR]),
+  createStaffScheduleValidator,
   wrapRequestHandler(createStaffScheduleController)
-)
-
-/**
- * Description: get a staff schedule
- * Path: /:id
- * Method: GET
- * Headers: Bearer <access_token>
- * Body:
- */
-staffScheduleRouters.get(
-  '/:id',
-  accessTokenValidator,
-  checkPermission([Roles.ADMIN]),
-  wrapRequestHandler(getStaffScheduleController)
 )
 
 /**
@@ -51,7 +38,8 @@ staffScheduleRouters.get(
 staffScheduleRouters.get(
   '/',
   accessTokenValidator,
-  checkPermission([Roles.ADMIN]),
+  checkPermission([Roles.ADMIN, Roles.DOCTOR]),
+  paginationValidator,
   wrapRequestHandler(getStaffSchedulesController)
 )
 
@@ -65,7 +53,8 @@ staffScheduleRouters.get(
 staffScheduleRouters.patch(
   '/:id',
   accessTokenValidator,
-  checkPermission([Roles.ADMIN]),
+  checkPermission([Roles.ADMIN, Roles.DOCTOR]),
+  updateStaffScheduleValidator,
   wrapRequestHandler(updateStaffScheduleController)
 )
 

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { envConfig } from '~/constants/config'
 import { USER_MESSAGES } from '~/constants/message'
+import { PaginationQuery } from '~/models/requests/Other.requests'
 import {
   ChangePassReqBody,
   ForgotPassReqBody,
@@ -75,6 +76,18 @@ export const refreshTokenController = async (
 export const getMeController = async (req: Request, res: Response, next: NextFunction) => {
   const { user_id } = req.decoded_authorization as TokenPayload
   const result = await userService.getMe(user_id)
+  return res.json({
+    message: USER_MESSAGES.GET_ME_SUCCESS,
+    result
+  })
+}
+
+export const getListUserController = async (
+  req: Request<any, any, any, PaginationQuery>,
+  res: Response,
+  next: NextFunction
+) => {
+  const result = await userService.getListUser(req.query)
   return res.json({
     message: USER_MESSAGES.GET_ME_SUCCESS,
     result

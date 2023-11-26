@@ -81,3 +81,24 @@ export const stringEmptySchema = ({
     trim: true
   }
 }
+
+export const dateSchema = ({
+  messageEmpty,
+  messageDate
+}: {
+  messageEmpty: string
+  messageDate: string
+}): ParamSchema => {
+  return {
+    notEmpty: {
+      errorMessage: messageEmpty
+    },
+    isISO8601: {
+      options: {
+        strict: true,
+        strictSeparator: true
+      },
+      errorMessage: messageDate
+    }
+  }
+}

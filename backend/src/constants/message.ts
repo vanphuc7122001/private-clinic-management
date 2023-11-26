@@ -49,7 +49,8 @@ export const USER_MESSAGES = {
   UPDATE_ME_SUCCESS: 'Update me successfully',
   DATE_OF_BIRTH_IS_REQUIRED: 'Date of birth is required',
   DATE_OF_BIRTH_MUST_BE_ISO8601: 'Date of birth must be ISO8601',
-  NOT_PERMISSION: 'Not allowed to access this resource'
+  NOT_PERMISSION: 'Not allowed to access this resource',
+  USER_IS_PATIENT_CANNOT_OTHER_ASSINGMENT: 'User is patient cannot other assignment'
 } as const
 
 export const MEDIA_MESSAGES = {
@@ -153,7 +154,16 @@ export const STAFF_SCHEDULE_MESSAGES = {
   UPDATE_STAFF_SCHEDULE_SUCCESS: 'Update staff schedule successfully',
   GET_STAFF_SCHEDULE_SUCCESS: 'Get staff schedule successfully',
   GET_STAFF_SCHEDULES_SUCCESS: 'Get staff schedules successfully',
-  DELETE_STAFF_SCHEDULE_SUCCESS: 'Delete staff schedule successfully'
+  DELETE_STAFF_SCHEDULE_SUCCESS: 'Delete staff schedule successfully',
+  DATE_MUST_BE_ISO_STRING: 'Date must be a valid ISO string',
+  DATE_IS_REQUIRED: 'Date is required',
+  STAFF_ID_IS_REQUIRED: 'Staff id is required',
+  STAFF_MUST_BE_A_STRING: 'Staff must be a string',
+  STAFF_NOT_FOUND: 'Staff not found',
+  SHIFT_IS_REQUIRED: 'Shift is required',
+  SHIFT_MUST_BE_STRING: 'Shift must be a string',
+  ID_IS_REQUIRED: 'Id is required',
+  STAFF_SCHEDULE_NOT_FOUND: 'Staff schedule not found'
 } as const
 
 export const BILL_MESSAGES = {
