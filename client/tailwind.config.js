@@ -1,13 +1,13 @@
 /** @type {import('tailwindcss').Config} */
-// import tailwindElement from 'tw-elements/dist/plugin.cjs'
+import tailwindElement from 'tw-elements/dist/plugin.cjs'
 export default {
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}', './node_modules/tw-elements/dist/js/**/*.js'],
   theme: {
     extend: {
       fontFamily: {
         sans: ['Poppins', 'sans-serif']
       }
     }
-  }
-  // plugins: [tailwindElement] './node_modules/tw-elements/dist/js/**/*.js'
+  },
+  plugins: [tailwindElement]
 }

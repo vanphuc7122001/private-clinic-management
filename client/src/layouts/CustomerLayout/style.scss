@@ -12,12 +12,12 @@ body {
   scroll-behavior: smooth;
 }
 
-html {
+/* html {
   font-size: 62.5%;
-}
+} */
 
 body {
-  font-size: 1.6rem;
+  font-size: 16px;
   font-family: 'Sora', sans-serif;
 }
 
@@ -42,7 +42,7 @@ a {
   padding: 0 20px;
   border-radius: var(--radius-btn, 30px);
   border: 1px solid #2e80ce;
-  font-size: 1.6rem;
+  font-size: 16px;
   font-weight: 400;
   color: #fff;
   background: #2e80ce;
@@ -55,7 +55,7 @@ a {
 
 .heading {
   color: #10375c;
-  font-size: var(--font-size-heading, 5rem);
+  font-size: var(--font-size-heading, 50px);
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -1px;
@@ -63,7 +63,7 @@ a {
 
 .desc {
   color: #575f66;
-  font-size: var(--font-size-desc, 1.8rem);
+  font-size: var(--font-size-desc, 18px);
   font-weight: 300;
   line-height: var(--line-height-desc, 1.66);
 }
@@ -101,50 +101,6 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.logo {
-  position: relative;
-  font-size: 1rem;
-  display: inline-flex;
-  align-items: flex-start;
-}
-
-.logo__circle::before,
-.logo__circle::after {
-  content: '';
-  display: inline-block;
-  width: var(--width-logo, 3em);
-  height: var(--height-logo, 3em);
-  border-radius: 50%;
-  background: var(--bg-logo, #2e80ce);
-}
-
-.logo__circle::after {
-  --width-logo: 1.6em;
-  --height-logo: 1.6em;
-  --bg-logo: #fff;
-  position: absolute;
-  top: 1.1em;
-  left: 1.1em;
-}
-
-.logo__text {
-  margin-left: 0.6em;
-  text-align: right;
-  line-height: 1.6em;
-}
-
-.logo__brand {
-  display: block;
-  font-size: 1.8em;
-  font-weight: 400;
-  color: #fff;
-}
-
-.logo__brand--small {
-  font-size: 1.2em;
-  font-weight: 300;
 }
 
 .nav {
@@ -189,7 +145,7 @@ a {
 .nav__link,
 .action__login {
   color: #c9d2da;
-  font-size: 1.6rem;
+  font-size: 16px;
   font-weight: 300;
   line-height: 1.75; /* 175% */
 }
@@ -212,8 +168,8 @@ a {
 }
 
 .hero {
-  padding-top: 80px;
   display: flex;
+  padding-top: 80px;
 }
 
 .hero__content {
@@ -224,7 +180,7 @@ a {
 .hero__heading {
   width: 517px;
   color: #fff;
-  font-size: 7rem;
+  font-size: 70px;
   font-weight: 600;
   line-height: 1.14; /* 114.286% */
   letter-spacing: -1.4px;
@@ -244,7 +200,7 @@ a {
 .hero__phone {
   margin-left: 38px;
   color: #fff;
-  font-size: 1.8rem;
+  font-size: 18px;
   font-weight: 400;
   line-height: 1.66;
 }
@@ -355,7 +311,7 @@ a {
 }
 
 .service-item__heading {
-  --font-size-heading: 1.8rem;
+  --font-size-heading: 18px;
 }
 
 .service-item__desc {
@@ -402,7 +358,7 @@ a {
 }
 
 .work-item__heading {
-  --font-size-heading: 2.6rem;
+  --font-size-heading: 26px;
   margin-top: 18px;
 }
 
@@ -417,66 +373,12 @@ a {
   margin-top: 18px;
   display: inline-block;
   color: #2e80ce;
-  font-size: 1.6rem;
+  font-size: 16px;
   font-weight: 400;
   line-height: 1.75; /* 175% */
 }
 
 /* Feature */
-.feature {
-  margin-top: 85px;
-  padding: 85px 0;
-  background: #fff;
-}
-
-.feature__inner {
-  display: flex;
-}
-
-.feature__media {
-  position: relative;
-  width: 48%;
-}
-
-.feature__img {
-  position: absolute;
-  border-radius: 6px;
-  object-fit: cover;
-}
-
-.feature__img:first-child {
-  top: 0;
-  left: 0;
-  width: 512px;
-  height: 370px;
-}
-
-.feature__img:last-child {
-  width: 332px;
-  height: 370px;
-  bottom: 0;
-  right: 0;
-}
-
-.feature__content {
-  width: 52%;
-  padding: 82px 0 0 130px;
-}
-
-.feature__heading,
-.feature__desc {
-  width: 470px;
-}
-
-.feature__desc {
-  margin-top: 18px;
-}
-
-.feature__btn {
-  margin-top: 38px;
-  margin-bottom: 83px;
-  margin: 38px 0 83px;
-}
 
 /* Member */
 
@@ -529,13 +431,13 @@ a {
   margin-top: 12px;
   color: #10375c;
   text-align: center;
-  font-size: 1.6rem;
+  font-size: 16px;
   font-weight: 400;
   line-height: 1.75; /* 175% */
 }
 
 .member-item__title {
-  --font-size-desc: 1.4rem;
+  --font-size-desc: 14px;
   text-align: center;
 }
 
@@ -566,46 +468,6 @@ a {
 
 /* install */
 
-.install {
-  padding: 85px 0;
-}
-
-.install__inner {
-  border-radius: 4px;
-  background: #2e80ce;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.install__img {
-  width: 284px;
-  height: 522px;
-  object-fit: cover;
-  margin-left: 70px;
-  margin-top: -95px;
-}
-
-.install__content {
-  padding: 76px 70px 75px 160px;
-}
-
-.install__content-heading {
-  width: 489px;
-  color: #fff;
-}
-
-.install__content-desc {
-  margin-top: 18px;
-  color: #fff;
-}
-
-.install__row {
-  margin-top: 38px;
-  display: inline-flex;
-  column-gap: 28px;
-}
-
 /* News */
 
 .new {
@@ -630,7 +492,7 @@ a {
   display: inline-block;
   padding: 28px 0;
   color: #10375c;
-  font-size: 1.8rem;
+  font-size: 18px;
   font-weight: 600;
   line-height: 1.55; /* 155.556% */
   text-decoration-line: underline;
@@ -684,7 +546,7 @@ a {
 
 .new-item__desc {
   margin-top: 10px;
-  --font-size-desc: 1.4rem;
+  --font-size-desc: 14px;
   --line-height-desc: 1.7;
   width: 226px;
   height: 72px;
@@ -694,48 +556,11 @@ a {
 .new-item_more {
   margin-top: 12px;
   color: #10375c;
-  font-size: 1.4rem;
+  font-size: 14px;
   font-weight: 400;
 }
 
 /* Appointment */
-
-.appointment {
-  padding: 85px 0;
-}
-
-.appointment__inner {
-  padding: 100px 0;
-  background: #f6fbff;
-}
-
-.appointment__heading {
-  text-align: center;
-  position: relative;
-}
-
-.appointment__heading::after {
-  position: absolute;
-  content: '';
-  display: inline-block;
-  width: 136px;
-  height: 2px;
-  background: #2e80ce;
-  bottom: -18px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.appointment__desc {
-  --font-size-desc: 1.6rem;
-  margin: 38px auto;
-  text-align: center;
-  width: 617px;
-}
-
-.appointment__btn {
-  text-align: center;
-}
 
 /* Footer */
 .footer {
@@ -753,7 +578,7 @@ a {
   margin-top: 21px;
   width: 336px;
   color: #a9b3bb;
-  font-size: 1.6rem;
+  font-size: 16px;
   font-weight: 400;
   line-height: 1.75; /* 175% */
 }
@@ -761,14 +586,14 @@ a {
 .footer__heading {
   color: #fff;
   font-family: Open Sans;
-  font-size: 1.6rem;
+  font-size: 16px;
   font-weight: 600;
   line-height: 1.75; /* 175% */
 }
 
 .footer__item {
   color: #a9b3bb;
-  font-size: 1.4rem;
+  font-size: 14px;
   font-family: Open Sans;
   font-style: normal;
   font-weight: 400;
@@ -817,7 +642,7 @@ a {
   outline: none;
   color: #9ca8b1;
   font-family: Open Sans;
-  font-size: 1.4rem;
+  font-size: 14px;
   font-weight: 400;
   line-height: 1.85; /* 185.714% */
   padding: 10px;
@@ -831,7 +656,7 @@ a {
   color: #fff;
   cursor: pointer;
   font-family: Open Sans;
-  font-size: 1.4rem;
+  font-size: 14px;
   font-weight: 600;
   line-height: 1.85; /* 185.714% */
 }
@@ -854,7 +679,7 @@ a {
   color: #aab3ba;
   text-align: center;
   font-family: Open Sans;
-  font-size: 1.4rem;
+  font-size: 14px;
   font-weight: 400;
   line-height: 1.85;
 }

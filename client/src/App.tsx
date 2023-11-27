@@ -1,13 +1,36 @@
-import { useEffect } from 'react'
+import { useEffect, useContext } from 'react'
 import useRouteElements from './hooks/useRouteElements'
-import { initTE, Input, Ripple } from 'tw-elements'
+// import { Datepicker, Input, initTE } from 'tw-elements'
+import { LocalStorageEventTarget, getAccessTokenFromLS, getRolesFromAccessToken } from './utils/auth'
+import { AppContext } from './contexts/app.context'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import ErrorBoundary from './components/ErrorBoundary'
+import { useNavigate } from 'react-router-dom'
 
 function App() {
+  const { reset, isAuthenticated } = useContext(AppContext)
+
+  const navigate = useNavigate()
   useEffect(() => {
-    initTE({ Input, Ripple })
-  }, [])
+    // initTE({ Datepicker, Input })
+  }, [isAuthenticated, navigate])
+  useEffect(() => {
+    LocalStorageEventTarget.addEventListener('clearLS', reset)
+    return () => {
+      LocalStorageEventTarget.removeEventListener('clearLS', reset)
+    }
+  }, [reset])
+
   const element = useRouteElements()
-  return <div className='App'>{element}</div>
+  return (
+    <div className='App'>
+      <ErrorBoundary>
+        {element}
+        <ToastContainer />
+      </ErrorBoundary>
+    </div>
+  )
 }
 
 export default App

@@ -1,0 +1,43 @@
+.logo {
+  position: relative;
+  font-size: 10px;
+  display: inline-flex;
+  align-items: flex-start;
+}
+
+.logo__circle::before,
+.logo__circle::after {
+  content: '';
+  display: inline-block;
+  width: var(--width-logo, 30px);
+  height: var(--height-logo, 30px);
+  border-radius: 50%;
+  background: var(--bg-logo, #2e80ce);
+}
+
+.logo__circle::after {
+  --width-logo: 16px;
+  --height-logo: 16px;
+  --bg-logo: #fff;
+  position: absolute;
+  top: 11px;
+  left: 11px;
+}
+
+.logo__text {
+  margin-left: 6px;
+  text-align: right;
+  line-height: 16px;
+}
+
+.logo__brand {
+  display: block;
+  font-size: 18px;
+  font-weight: 400;
+  color: #fff;
+}
+
+.logo__brand--small {
+  font-size: 12px;
+  font-weight: 300;
+}
