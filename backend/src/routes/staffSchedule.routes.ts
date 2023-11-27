@@ -3,6 +3,7 @@ import { Roles } from '~/constants/enum'
 import {
   createStaffScheduleController,
   getStaffSchedulesController,
+  getStaffSchedulesControllerOfUser,
   updateStaffScheduleController
 } from '~/controllers/staffSchedule.controllers'
 
@@ -41,6 +42,21 @@ staffScheduleRouters.get(
   checkPermission([Roles.ADMIN, Roles.DOCTOR]),
   paginationValidator,
   wrapRequestHandler(getStaffSchedulesController)
+)
+
+/**
+ * Description: get staff schedule
+ * Path: /
+ * Method: GET
+ * Headers: Bearer <access_token>
+ * Body:
+ */
+staffScheduleRouters.get(
+  '/user',
+  accessTokenValidator,
+  checkPermission([Roles.ADMIN, Roles.DOCTOR, Roles.PHARMACIST, Roles.SUPPORTER]),
+  paginationValidator,
+  wrapRequestHandler(getStaffSchedulesControllerOfUser)
 )
 
 /**

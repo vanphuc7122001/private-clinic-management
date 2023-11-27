@@ -2,29 +2,34 @@ import { Router } from 'express'
 import { Roles } from '~/constants/enum'
 import {
   createMedicalRecordController,
-  deleteMedicalRecordController,
   getMedicalRecordController,
   getMedicalRecordsController,
   updateMedicalRecordController
 } from '~/controllers/medicalRecord.controllers'
 
 import { checkPermission } from '~/middlewares/common.middlewares'
+import {
+  createMedicalRecordValidator,
+  getMedicalRecordValidator,
+  updateMedicalRecordValidator
+} from '~/middlewares/medicalRecord.middlewares'
 import { accessTokenValidator } from '~/middlewares/user.middlewares'
 import { wrapRequestHandler } from '~/utils/handlers'
 
 const medicaRecordRouters = Router()
 
 /**
- * Description: create a medical record
+ * Description: create a medical record with services
  * Path: /
  * Method: POST
  * Headers : Bearer <access_token>
- * Body: CreateDoctorReqBody
+ * Body: MedicalRecordReqBody & {services : ['id1', 'id2']}
  */
 medicaRecordRouters.post(
-  '/',
+  '/services',
   accessTokenValidator,
   checkPermission([Roles.ADMIN]),
+  createMedicalRecordValidator,
   wrapRequestHandler(createMedicalRecordController)
 )
 
@@ -39,6 +44,7 @@ medicaRecordRouters.get(
   '/:id',
   accessTokenValidator,
   checkPermission([Roles.ADMIN]),
+  getMedicalRecordValidator,
   wrapRequestHandler(getMedicalRecordController)
 )
 
@@ -64,24 +70,11 @@ medicaRecordRouters.get(
  * Body:
  */
 medicaRecordRouters.patch(
-  '/:id',
+  '/:id/services',
   accessTokenValidator,
   checkPermission([Roles.ADMIN]),
+  updateMedicalRecordValidator,
   wrapRequestHandler(updateMedicalRecordController)
-)
-
-/**
- * Description: delete  medical record
- * Path: /:id
- * Method: DELETE
- * Headers: Bearer <access_token>
- * Body:
- */
-medicaRecordRouters.delete(
-  '/:id',
-  accessTokenValidator,
-  checkPermission([Roles.ADMIN]),
-  wrapRequestHandler(deleteMedicalRecordController)
 )
 
 export default medicaRecordRouters

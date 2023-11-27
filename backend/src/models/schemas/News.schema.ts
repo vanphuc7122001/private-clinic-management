@@ -6,6 +6,7 @@ interface NewsType {
   images: string
   description: string
   content: string
+  status?: boolean
   user_id: string
   category_id: string
   created_at?: Date
@@ -17,6 +18,7 @@ export default class News {
   title: string
   images: string
   description: string
+  status: boolean
   content: string
   user_id: string
   category_id: string
@@ -28,6 +30,7 @@ export default class News {
     this.id = news.id || ObjectId()
     this.title = news.title
     this.images = news.images
+    this.status = news.status || false
     this.description = news.description
     this.content = news.content
     this.user_id = news.user_id

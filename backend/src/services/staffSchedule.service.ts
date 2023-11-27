@@ -66,6 +66,45 @@ class StaffScheduleService {
       total_record: total || 0
     }
   }
+
+  async getStaffSchedulesUser({ payload, user_id }: { payload: PaginationQuery; user_id: string }) {
+    const page = Number(payload.page) || envConfig.page
+    const limit = Number(payload.limit) || envConfig.limit
+    const { ...query } = omit(payload, ['limit', 'page'])
+    const where: any = {
+      staff_id: user_id
+    }
+    if (query) {
+      for (const key in query) {
+        const operator =
+          key === 'date'
+            ? { equals: new Date(query[key]) }
+            : {
+                contains: query[key]
+              }
+        where[key] = operator
+      }
+    }
+
+    const [total, staffSchedules] = await Promise.all([
+      databaseService.staffSchedules.count({
+        where
+      }),
+      databaseService.staffSchedules.findMany({
+        where,
+        skip: (page - 1) * limit,
+        take: limit
+      })
+    ])
+
+    return {
+      page,
+      limit,
+      staffSchedules,
+      total_page: Math.ceil(total / limit) || 0,
+      total_record: total || 0
+    }
+  }
 }
 
 const staffScheduleService = new StaffScheduleService()

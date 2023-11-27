@@ -72,6 +72,10 @@ class DatabaseService {
   get medicines() {
     return this.instance.medicines
   }
+
+  get medicalRecordServices() {
+    return this.instance.medicalRecordService
+  }
 }
 
 const databaseService = new DatabaseService()

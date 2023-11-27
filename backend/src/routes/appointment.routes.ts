@@ -7,7 +7,12 @@ import {
   getAppointmentsController,
   updateAppointmentController
 } from '~/controllers/appointment.controllers'
-import { checkPermission } from '~/middlewares/common.middlewares'
+import {
+  createAppointmentValidator,
+  getOrDeleteAppointmentValidator,
+  updateAppointmentValidator
+} from '~/middlewares/appointment.middlewares'
+import { checkPermission, paginationValidator } from '~/middlewares/common.middlewares'
 import { accessTokenValidator } from '~/middlewares/user.middlewares'
 import { wrapRequestHandler } from '~/utils/handlers'
 
@@ -24,6 +29,7 @@ appointmentRouters.post(
   '/',
   accessTokenValidator,
   checkPermission([Roles.ADMIN]),
+  createAppointmentValidator,
   wrapRequestHandler(createAppointmentController)
 )
 
@@ -38,6 +44,7 @@ appointmentRouters.get(
   '/:id',
   accessTokenValidator,
   checkPermission([Roles.ADMIN]),
+  getOrDeleteAppointmentValidator,
   wrapRequestHandler(getAppointmentController)
 )
 
@@ -52,6 +59,7 @@ appointmentRouters.get(
   '/',
   accessTokenValidator,
   checkPermission([Roles.ADMIN]),
+  paginationValidator,
   wrapRequestHandler(getAppointmentsController)
 )
 
@@ -66,12 +74,14 @@ appointmentRouters.patch(
   '/:id',
   accessTokenValidator,
   checkPermission([Roles.ADMIN]),
+  updateAppointmentValidator,
   wrapRequestHandler(updateAppointmentController)
 )
 
 /**
  * Description: delete appointment
- * Method: DELETE
+ * Path: /:id
+ * Method: Delete
  * Headers: Bearer <access_token>
  * Body:
  */
@@ -79,6 +89,7 @@ appointmentRouters.delete(
   '/:id',
   accessTokenValidator,
   checkPermission([Roles.ADMIN]),
+  getOrDeleteAppointmentValidator,
   wrapRequestHandler(deleteAppointmentController)
 )
 

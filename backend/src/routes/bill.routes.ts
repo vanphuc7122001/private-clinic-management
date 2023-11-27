@@ -7,8 +7,9 @@ import {
   getBillsController,
   updateBillController
 } from '~/controllers/bill.controllers'
+import { createBillValidator, updateBillValidator } from '~/middlewares/bill.middlewares'
 
-import { checkPermission } from '~/middlewares/common.middlewares'
+import { checkPermission, paginationValidator } from '~/middlewares/common.middlewares'
 import { accessTokenValidator } from '~/middlewares/user.middlewares'
 import { wrapRequestHandler } from '~/utils/handlers'
 
@@ -21,7 +22,13 @@ const billRouters = Router()
  * Headers : Bearer <access_token>
  * Body: CreateDoctorReqBody
  */
-billRouters.post('/', accessTokenValidator, checkPermission([Roles.ADMIN]), wrapRequestHandler(createBillController))
+billRouters.post(
+  '/',
+  accessTokenValidator,
+  checkPermission([Roles.ADMIN]),
+  createBillValidator,
+  wrapRequestHandler(createBillController)
+)
 
 /**
  * Description: get a bill
@@ -39,7 +46,13 @@ billRouters.get('/:id', accessTokenValidator, checkPermission([Roles.ADMIN]), wr
  * Headers: Bearer <access_token>
  * Body:
  */
-billRouters.get('/', accessTokenValidator, checkPermission([Roles.ADMIN]), wrapRequestHandler(getBillsController))
+billRouters.get(
+  '/',
+  accessTokenValidator,
+  checkPermission([Roles.ADMIN]),
+  paginationValidator,
+  wrapRequestHandler(getBillsController)
+)
 
 /**
  * Description: update bill
@@ -52,6 +65,7 @@ billRouters.patch(
   '/:id',
   accessTokenValidator,
   checkPermission([Roles.ADMIN]),
+  updateBillValidator,
   wrapRequestHandler(updateBillController)
 )
 

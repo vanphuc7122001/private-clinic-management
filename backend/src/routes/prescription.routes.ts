@@ -2,13 +2,17 @@ import { Router } from 'express'
 import { Roles } from '~/constants/enum'
 import {
   createPrescriptionController,
-  deletePrescriptionController,
   getPrescriptionController,
   getPrescriptionsController,
   updatePrescriptionController
 } from '~/controllers/prescription.controllers'
 
-import { checkPermission } from '~/middlewares/common.middlewares'
+import { checkPermission, paginationValidator } from '~/middlewares/common.middlewares'
+import {
+  createPrescriptionValidator,
+  getPrescriptionValidator,
+  updatePrescriptionValidator
+} from '~/middlewares/prescription.middlewares'
 import { accessTokenValidator } from '~/middlewares/user.middlewares'
 import { wrapRequestHandler } from '~/utils/handlers'
 
@@ -22,9 +26,10 @@ const prescriptionRouters = Router()
  * Body: CreateDoctorReqBody
  */
 prescriptionRouters.post(
-  '/',
+  '/medicines',
   accessTokenValidator,
   checkPermission([Roles.ADMIN]),
+  createPrescriptionValidator,
   wrapRequestHandler(createPrescriptionController)
 )
 
@@ -39,6 +44,7 @@ prescriptionRouters.get(
   '/:id',
   accessTokenValidator,
   checkPermission([Roles.ADMIN]),
+  getPrescriptionValidator,
   wrapRequestHandler(getPrescriptionController)
 )
 
@@ -53,6 +59,7 @@ prescriptionRouters.get(
   '/',
   accessTokenValidator,
   checkPermission([Roles.ADMIN]),
+  paginationValidator,
   wrapRequestHandler(getPrescriptionsController)
 )
 
@@ -64,24 +71,11 @@ prescriptionRouters.get(
  * Body:
  */
 prescriptionRouters.patch(
-  '/:id',
+  '/:id/medicines',
   accessTokenValidator,
   checkPermission([Roles.ADMIN]),
+  updatePrescriptionValidator,
   wrapRequestHandler(updatePrescriptionController)
-)
-
-/**
- * Description: delete prescription
- * Path: /:id
- * Method: DELETE
- * Headers: Bearer <access_token>
- * Body:
- */
-prescriptionRouters.delete(
-  '/:id',
-  accessTokenValidator,
-  checkPermission([Roles.ADMIN]),
-  wrapRequestHandler(deletePrescriptionController)
 )
 
 export default prescriptionRouters

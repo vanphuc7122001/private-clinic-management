@@ -1,8 +1,17 @@
 import { NextFunction, Response, Request } from 'express'
 import { PRESCRIPTION_MESSAGES } from '~/constants/message'
-export const createPrescriptionController = (req: Request, res: Response, next: NextFunction) => {
+import { IdParams } from '~/models/requests/Other.requests'
+import { PrescriptionReqBody } from '~/models/requests/Prescription.requests'
+import prescriptionService from '~/services/prescription.service'
+export const createPrescriptionController = async (
+  req: Request<any, any, PrescriptionReqBody & { medicines: any[] }>,
+  res: Response,
+  next: NextFunction
+) => {
+  const result = await prescriptionService.createPrescription({ ...req.body })
   res.json({
-    message: PRESCRIPTION_MESSAGES.CREATE_PRESCRIPTION_SUCCESS
+    message: PRESCRIPTION_MESSAGES.CREATE_PRESCRIPTION_SUCCESS,
+    result
   })
 }
 
@@ -18,9 +27,16 @@ export const getPrescriptionsController = (req: Request, res: Response, next: Ne
   })
 }
 
-export const updatePrescriptionController = (req: Request, res: Response, next: NextFunction) => {
+export const updatePrescriptionController = async (
+  req: Request<IdParams, any, PrescriptionReqBody & { medicines: any[] }>,
+  res: Response,
+  next: NextFunction
+) => {
+  const result = await prescriptionService.updatePrescription({ ...req.body, id: req.params.id })
+
   res.json({
-    message: PRESCRIPTION_MESSAGES.UPDATE_PRESCRIPTION_SUCCESS
+    message: PRESCRIPTION_MESSAGES.UPDATE_PRESCRIPTION_SUCCESS,
+    result
   })
 }
 

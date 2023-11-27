@@ -2,12 +2,12 @@ import { Router } from 'express'
 import { Roles } from '~/constants/enum'
 import {
   createDoctorController,
-  deleteDoctorController,
   getDoctorController,
   getDoctorsController,
   updateDoctorController
 } from '~/controllers/doctor.controllers'
-import { checkPermission } from '~/middlewares/common.middlewares'
+import { checkPermission, paginationValidator } from '~/middlewares/common.middlewares'
+import { createDoctorValidator, getDoctorValidator, updateDoctorValidator } from '~/middlewares/doctor.middlewares'
 import { accessTokenValidator } from '~/middlewares/user.middlewares'
 import { wrapRequestHandler } from '~/utils/handlers'
 
@@ -18,12 +18,13 @@ const doctorRouters = Router()
  * Path: /
  * Method: POST
  * Headers : Bearer <access_token>
- * Body: CreateDoctorReqBody
+ * Body: DoctorReqBody
  */
 doctorRouters.post(
   '/',
   accessTokenValidator,
   checkPermission([Roles.ADMIN]),
+  createDoctorValidator,
   wrapRequestHandler(createDoctorController)
 )
 
@@ -34,7 +35,13 @@ doctorRouters.post(
  * Headers: Bearer <access_token>
  * Body:
  */
-doctorRouters.get('/:id', accessTokenValidator, checkPermission([Roles.ADMIN]), wrapRequestHandler(getDoctorController))
+doctorRouters.get(
+  '/:id',
+  accessTokenValidator,
+  checkPermission([Roles.ADMIN]),
+  getDoctorValidator,
+  wrapRequestHandler(getDoctorController)
+)
 
 /**
  * Description: get doctors
@@ -43,7 +50,13 @@ doctorRouters.get('/:id', accessTokenValidator, checkPermission([Roles.ADMIN]), 
  * Headers: Bearer <access_token>
  * Body:
  */
-doctorRouters.get('/', accessTokenValidator, checkPermission([Roles.ADMIN]), wrapRequestHandler(getDoctorsController))
+doctorRouters.get(
+  '/',
+  accessTokenValidator,
+  checkPermission([Roles.ADMIN]),
+  paginationValidator,
+  wrapRequestHandler(getDoctorsController)
+)
 
 /**
  * Description: update doctor information
@@ -56,21 +69,8 @@ doctorRouters.patch(
   '/:id',
   accessTokenValidator,
   checkPermission([Roles.ADMIN]),
+  updateDoctorValidator,
   wrapRequestHandler(updateDoctorController)
-)
-
-/**
- * Description: delete doctor
- * Path: /:id
- * Method: DELETE
- * Headers: Bearer <access_token>
- * Body:
- */
-doctorRouters.delete(
-  '/:id',
-  accessTokenValidator,
-  checkPermission([Roles.ADMIN]),
-  wrapRequestHandler(deleteDoctorController)
 )
 
 export default doctorRouters

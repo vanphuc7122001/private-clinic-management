@@ -1,6 +1,5 @@
 import { Router } from 'express'
 import { Roles } from '~/constants/enum'
-import { deleteMedicalRecordController } from '~/controllers/medicalRecord.controllers'
 import {
   createMedicalServiceController,
   deleteMedicalServiceController,

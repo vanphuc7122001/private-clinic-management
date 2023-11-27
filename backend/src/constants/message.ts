@@ -130,7 +130,19 @@ export const DOCTOR_MESSAGES = {
   UPDATE_DOCTOR_SUCCESS: 'Update doctor successfully',
   GET_DOCTOR_SUCCESS: 'Get doctor successfully',
   GET_DOCTORS_SUCCESS: 'Get doctors successfully',
-  DELETE_DOCTOR_SUCCESS: 'Delete doctor successfully'
+  DELETE_DOCTOR_SUCCESS: 'Delete doctor successfully',
+  DOCTOR_ID_MUST_BE_A_STRING: 'Doctors ID must be a string',
+  DOCTOR_ID_IS_REQUIRED: 'Doctor ID is required',
+  CERTIFICATION_IS_REQUIRED: 'Certificate is required',
+  CERTIFICATION_MUST_BE_A_STRING: 'Certificate must be a string',
+  EXPIRIENCE_IS_REQUIRED: 'Expiration is required',
+  EXPIRIENCE_MUST_BE_A_STRING: 'Expiration must be a string',
+  EDUCATION_IS_REQUIRED: 'Education is required',
+  EDUCATION_MUST_BE_A_STRING: 'Education must be a string',
+  USER_NOT_FOUND_OR_USER_IS_NOT_DOCTOR: 'User is not found or is not a doctor',
+  ID_IS_REQUIRED: 'ID is required',
+  DOCTOR_NOT_FOUND: 'Doctor  not found ',
+  DOCTOR_ALREADY_EXIST: 'Doctor already exists'
 } as const
 
 export const MEDICAL_RECORD_MESSAGES = {
@@ -138,7 +150,20 @@ export const MEDICAL_RECORD_MESSAGES = {
   UPDATE_MEDICAL_RECORD_SUCCESS: 'Update medical record successfully',
   GET_MEDICAL_RECORD_SUCCESS: 'Get medical record successfully',
   GET_MEDICAL_RECORDS_SUCCESS: 'Get medical records successfully',
-  DELETE_MEDICAL_RECORD_SUCCESS: 'Delete medical record successfully'
+  DELETE_MEDICAL_RECORD_SUCCESS: 'Delete medical record successfully',
+  SERVICES_MUST_BE_ARRAY: 'Service must be array',
+  SERVICESS_IS_REQUIRED: 'Service is required',
+  SERVICES_NOT_FOUND: 'Service not found',
+  DIAGNOSIS_IS_REQUIRED: 'Diagosis is required',
+  DIAGNOS_MUST_BE_STRING: 'Diagosis must be a string',
+  NOTE_IS_REQUIRED: 'Note is required',
+  NOTE_MUST_BE_STRING: 'Note must be a string',
+  APPOINTMENT_IS_REQUIRED: 'Appointment is required',
+  APPOINTMENT_MUST_BE_STRING: 'Appointment must be a string',
+  APPOINTMENT_NOT_FOUND: 'Appointment not found',
+  ID_IS_REQUIRED: 'Id is required',
+  MEDICAL_RECORD_NOT_FOUND: 'Medical record not found',
+  APPOINTMENT__ALREADY_EXIST_IN_MEDICAL_RECORD: 'Appointment already exists in medical record'
 } as const
 
 export const APPOINTMENT_MESSAGES = {
@@ -146,7 +171,17 @@ export const APPOINTMENT_MESSAGES = {
   UPDATE_APPOINTMENT_SUCCESS: 'Update appointment successfully',
   GET_APPOINTMENT_SUCCESS: 'Get appointment successfully',
   GET_APPOINTMENTS_SUCCESS: 'Get appointments successfully',
-  DELETE_APPOINTMENT_SUCCESS: 'Delete appointment successfully'
+  DELETE_APPOINTMENT_SUCCESS: 'Delete appointment successfully',
+  DATE_MUST_BE_TO_ISO_STRING: 'Date must be in ISO string format',
+  DATE_IS_REQUIRED: 'Date is required',
+  DOCTOR_ID_IS_REQUIRED: 'Doctors ID must be provided',
+  DOCTOR_ID_IS_MUST_BE_A_STRING: 'Doctor ID must be a string',
+  DOCTOR_NOT_FOUND: 'Doctor not found',
+  PATIENT_ID_IS_REQUIRED: 'Patient id is required',
+  PATIENT_ID_IS_MUST_BE_A_STRING: 'Patient ID must be a string',
+  PATIENT_NOT_FOUND: 'Patient not found',
+  ID_IS_REQUIRED: 'ID is required',
+  APPOINTMENT_NOT_FOUND: 'Appointment not found'
 } as const
 
 export const STAFF_SCHEDULE_MESSAGES = {
@@ -171,7 +206,15 @@ export const BILL_MESSAGES = {
   UPDATE_BILL_SUCCESS: 'Update bill successfully',
   GET_BILL_SUCCESS: 'Get bill successfully',
   GET_BILLS_SUCCESS: 'Get bills successfully',
-  DELETE_BILL_SUCCESS: 'Delete bill successfully'
+  DELETE_BILL_SUCCESS: 'Delete bill successfully',
+  MEDICAL_RECORD_IS_REQUIRED: 'Medical record is required',
+  MEDICAL_RECORD_NOT_FOUND: 'Medical record not found',
+  MEDICAL_RECORD_MUST_BE_STRING: 'Medical record must be string',
+  MEDICAL_RECORD_ALREADY_EXISTS: 'Medical record already exists',
+  AMOUNT_IS_REQUIRED: 'Amount is required',
+  AMOUNT_MUST_BE_STRING: 'Amount must be string',
+  ID_IS_REQUIRED: 'ID is required',
+  BILL_NOT_FOUND: 'Bill not found'
 } as const
 
 export const PRESCRIPTION_MESSAGES = {
@@ -179,7 +222,16 @@ export const PRESCRIPTION_MESSAGES = {
   UPDATE_PRESCRIPTION_SUCCESS: 'Update prescription successfully',
   GET_PRESCRIPTION_SUCCESS: 'Get prescription successfully',
   GET_PRESCRIPTIONS_SUCCESS: 'Get prescriptions successfully',
-  DELETE_PRESCRIPTION_SUCCESS: 'Delete prescription successfully'
+  DELETE_PRESCRIPTION_SUCCESS: 'Delete prescription successfully',
+  MEDICAL_RECORD_IS_REQUIRED: 'Medical record is required',
+  MEDICAL_RECORD_MUST_BE_STRING: 'Medical record must be string',
+  MEDICAL_RECORD_NOT_FOUND: 'Medical record not found',
+  ID_IS_REQUIRED: 'ID is required',
+  PRESCRIPTION_NOT_FOUND: 'Prescription not found',
+  MEDICINE_MUST_BE_ARRAY: 'Medication must be provided in the format array',
+  MEDICINE_IS_REQUIRED: 'Medicine is required',
+  MEDICINE_NOT_FOUND: 'Medicine not found',
+  MEDICAL_ALREADY_EXIST: 'Medical already existss'
 } as const
 
 export const PRESCRIPTION_DETAIL_MESSAGES = {

@@ -17,3 +17,14 @@ export enum TokenType {
   RefreshToken,
   ForgotPasswordToken
 }
+
+export enum AppoitmentStatus {
+  UNCONFIRM = 'unconfirmed',
+  CONFIRM = 'confirm',
+  CANCEL = 'cancel'
+}
+
+export enum BillStatus {
+  UNPAID = 'unpaid',
+  PAID = 'paid'
+}
