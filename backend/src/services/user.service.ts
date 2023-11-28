@@ -242,7 +242,9 @@ class UserService {
         gender: true,
         name: true,
         phone: true,
-        password: true
+        password: true,
+        date_of_birth: true,
+        avatar: true
       }
     })
 
@@ -292,7 +294,7 @@ class UserService {
     const _payload = payload.date_of_birth
       ? { ...payload, date_of_birth: new Date(payload.date_of_birth) }
       : { ...payload }
-    await databaseService.users.update({
+    const result = await databaseService.users.update({
       where: {
         id: user_id
       },
@@ -300,6 +302,8 @@ class UserService {
         ..._payload
       }
     })
+
+    return result
   }
 
   async getListUser(payload: PaginationQuery) {

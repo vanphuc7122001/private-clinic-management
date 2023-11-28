@@ -1,4 +1,4 @@
-import './reset.scss'
+// import './reset.scss'
 import './style.scss'
 import HeaderHome from '~/components/Header/HeaderHome'
 import FooterHome from '~/components/Footer/FooterHome/FooterHome'

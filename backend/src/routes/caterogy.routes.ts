@@ -41,12 +41,7 @@ categoryRouters.post(
  * Permissions : Admin
  */
 
-categoryRouters.get(
-  '/',
-  accessTokenValidator,
-  checkPermission([Roles.ADMIN]),
-  wrapRequestHandler(getCaterogiesController)
-)
+categoryRouters.get('/', accessTokenValidator, wrapRequestHandler(getCaterogiesController))
 
 /**
  * Description : Update a category

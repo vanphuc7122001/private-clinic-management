@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useState, useMemo } from 'react'
 import config from '~/constants/config'
-import Input from './components/Input'
+import Input from '../../components/Input'
 import { useMutation } from '@tanstack/react-query'
 import authApi from '~/apis/auth.api'
 import { RegisterReqBody } from '~/types/auth.type'
@@ -9,14 +9,9 @@ import { isAxiosError } from '~/utils/utils'
 import HttpStatusCode from '~/constants/httpStatusCodeEnum'
 import { toast } from 'react-toastify'
 import { getRolesFromAccessToken } from '~/utils/auth'
+import { Gender } from '~/constants/enums'
 
 type FormType = RegisterReqBody
-
-const gender = {
-  other: 'other',
-  male: 'male',
-  female: 'female'
-}
 
 const initalFormState: FormType = {
   email: '',
@@ -27,7 +22,7 @@ const initalFormState: FormType = {
   phone: '',
   date_of_birth: '',
   role_id: config.patientId,
-  gender: gender.other
+  gender: Gender.other
 }
 
 type FormError =

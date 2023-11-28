@@ -23,9 +23,7 @@ class NewsService {
     const where: any = {}
     if (query) {
       for (const key in query) {
-        where[key] = {
-          contains: query[key]
-        }
+        where[key] = key === 'status' ? { equals: query[key] === 'false' ? false : true } : { contains: query[key] }
       }
     }
     const [total, news] = await Promise.all([

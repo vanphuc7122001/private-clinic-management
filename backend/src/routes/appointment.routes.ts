@@ -2,12 +2,15 @@ import { Router } from 'express'
 import { Roles } from '~/constants/enum'
 import {
   createAppointmentController,
+  createAppointmentUserController,
   deleteAppointmentController,
   getAppointmentController,
+  getAppointmentsAdminController,
   getAppointmentsController,
   updateAppointmentController
 } from '~/controllers/appointment.controllers'
 import {
+  createAppointmentUserValidator,
   createAppointmentValidator,
   getOrDeleteAppointmentValidator,
   updateAppointmentValidator
@@ -34,6 +37,21 @@ appointmentRouters.post(
 )
 
 /**
+ * Description: create a appointment client
+ * Path: /
+ * Method: POST
+ * Headers : Bearer <access_token>
+ * Body: CreateDoctorReqBody
+ */
+appointmentRouters.post(
+  '/users',
+  accessTokenValidator,
+  checkPermission([Roles.PATIENT]),
+  createAppointmentUserValidator,
+  wrapRequestHandler(createAppointmentUserController)
+)
+
+/**
  * Description: get a appointment
  * Path: /:id
  * Method: GET
@@ -43,13 +61,13 @@ appointmentRouters.post(
 appointmentRouters.get(
   '/:id',
   accessTokenValidator,
-  checkPermission([Roles.ADMIN]),
+  checkPermission([Roles.ADMIN, Roles.PATIENT, Roles.DOCTOR, Roles.SUPPORTER]),
   getOrDeleteAppointmentValidator,
   wrapRequestHandler(getAppointmentController)
 )
 
 /**
- * Description: get appointments
+ * Description: get appointments with user_id
  * Path: /
  * Method: GET
  * Headers: Bearer <access_token>
@@ -58,9 +76,24 @@ appointmentRouters.get(
 appointmentRouters.get(
   '/',
   accessTokenValidator,
-  checkPermission([Roles.ADMIN]),
+  checkPermission([Roles.ADMIN, Roles.PATIENT]),
   paginationValidator,
   wrapRequestHandler(getAppointmentsController)
+)
+
+/**
+ * Description: get appointments with admin , Roles.SUPPORTER
+ * Path: /
+ * Method: GET
+ * Headers: Bearer <access_token>
+ * Body:
+ */
+appointmentRouters.get(
+  '/admin',
+  accessTokenValidator,
+  checkPermission([Roles.ADMIN, Roles.SUPPORTER]),
+  paginationValidator,
+  wrapRequestHandler(getAppointmentsAdminController)
 )
 
 /**

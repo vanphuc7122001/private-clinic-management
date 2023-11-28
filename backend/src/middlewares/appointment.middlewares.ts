@@ -103,6 +103,17 @@ export const createAppointmentValidator = validate(
   )
 )
 
+export const createAppointmentUserValidator = validate(
+  checkSchema(
+    {
+      date: dateAppointmentSchema,
+      doctor_id: doctorIdSchema,
+      status: statusSchema
+    },
+    ['body']
+  )
+)
+
 export const updateAppointmentValidator = validate(
   checkSchema(
     {

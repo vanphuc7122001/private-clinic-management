@@ -38,7 +38,7 @@ doctorRouters.post(
 doctorRouters.get(
   '/:id',
   accessTokenValidator,
-  checkPermission([Roles.ADMIN]),
+  checkPermission([Roles.ADMIN, Roles.PATIENT, Roles.SUPPORTER, Roles.DOCTOR]),
   getDoctorValidator,
   wrapRequestHandler(getDoctorController)
 )
@@ -53,7 +53,7 @@ doctorRouters.get(
 doctorRouters.get(
   '/',
   accessTokenValidator,
-  checkPermission([Roles.ADMIN]),
+  checkPermission([Roles.ADMIN, Roles.PATIENT, Roles.SUPPORTER]),
   paginationValidator,
   wrapRequestHandler(getDoctorsController)
 )
@@ -68,7 +68,7 @@ doctorRouters.get(
 doctorRouters.patch(
   '/:id',
   accessTokenValidator,
-  checkPermission([Roles.ADMIN]),
+  checkPermission([Roles.ADMIN, Roles.DOCTOR]),
   updateDoctorValidator,
   wrapRequestHandler(updateDoctorController)
 )

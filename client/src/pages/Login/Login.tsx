@@ -2,7 +2,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import authApi from '~/apis/auth.api'
-import { toast } from 'react-toastify'
 import { getRolesFromAccessToken } from '~/utils/auth'
 
 type FormState = {
@@ -30,6 +29,7 @@ export default function Login() {
         } else {
           navigate('/')
         }
+        location.reload()
       }
     }
   })

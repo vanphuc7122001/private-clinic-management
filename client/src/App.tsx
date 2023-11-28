@@ -1,7 +1,7 @@
 import { useEffect, useContext } from 'react'
 import useRouteElements from './hooks/useRouteElements'
 // import { Datepicker, Input, initTE } from 'tw-elements'
-import { LocalStorageEventTarget, getAccessTokenFromLS, getRolesFromAccessToken } from './utils/auth'
+import { LocalStorageEventTarget } from './utils/auth'
 import { AppContext } from './contexts/app.context'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'

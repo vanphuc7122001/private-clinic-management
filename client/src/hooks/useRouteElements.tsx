@@ -6,8 +6,14 @@ import CustomerLayOut from '~/layouts/CustomerLayout'
 import Home from '~/pages/Customer/Home'
 import News from '~/pages/Customer/News'
 import Doctor from '~/pages/Customer/Doctor'
-import User from '~/pages/Customer/User'
 import NotFound from '~/pages/NotFound'
+import UserLayout from '~/pages/Customer/User/layouts/UserLayout/UserLayout'
+import Profile from '~/pages/Customer/User/pages/Profile'
+import History from '~/pages/Customer/User/pages/History'
+import ChangePassword from '~/pages/Customer/User/pages/ChangePassword'
+import DoctorDetail from '~/pages/Customer/Doctor/pages/DoctorDetail'
+import NewsDetail from '~/pages/Customer/News/pages/NewsDetail'
+import Caterogy from '~/pages/Dashboard/Caterogy'
 
 export default function useRouteElements() {
   const element = useRoutes([
@@ -22,7 +28,13 @@ export default function useRouteElements() {
     // dashboard layout
     {
       path: '/dashboard',
-      element: <DashboardLayout />
+      element: <DashboardLayout />,
+      children: [
+        {
+          path: '',
+          element: <Caterogy />
+        }
+      ]
     },
     // Customer layout
     {
@@ -38,12 +50,34 @@ export default function useRouteElements() {
           element: <News />
         },
         {
+          path: 'news/:id',
+          element: <NewsDetail />
+        },
+        {
           path: 'doctors',
           element: <Doctor />
         },
         {
+          path: 'doctors/:id',
+          element: <DoctorDetail />
+        },
+        {
           path: 'users',
-          element: <User />
+          element: <UserLayout />,
+          children: [
+            {
+              path: '',
+              element: <Profile />
+            },
+            {
+              path: 'history',
+              element: <History />
+            },
+            {
+              path: 'change-password',
+              element: <ChangePassword />
+            }
+          ]
         }
       ]
     },

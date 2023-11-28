@@ -1,5 +1,9 @@
 const path = {
-  user: 'users/'
+  user: 'users/',
+  doctor: 'doctors/',
+  new: 'news/',
+  appointment: 'appointments/',
+  caterogy: 'caterogies/'
 } as const
 
 export default path

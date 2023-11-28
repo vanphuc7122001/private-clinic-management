@@ -55,6 +55,14 @@ class DoctorService {
         where[key] = {
           contains: query[key]
         }
+
+        if (key === 'name') {
+          where[key] = {
+            name: {
+              contains: query[key]
+            }
+          }
+        }
       }
     }
 
