@@ -25,7 +25,7 @@ const billRouters = Router()
 billRouters.post(
   '/',
   accessTokenValidator,
-  checkPermission([Roles.ADMIN]),
+  checkPermission([Roles.ADMIN, Roles.DOCTOR]),
   createBillValidator,
   wrapRequestHandler(createBillController)
 )
@@ -37,7 +37,12 @@ billRouters.post(
  * Headers: Bearer <access_token>
  * Body:
  */
-billRouters.get('/:id', accessTokenValidator, checkPermission([Roles.ADMIN]), wrapRequestHandler(getBillController))
+billRouters.get(
+  '/:id',
+  accessTokenValidator,
+  checkPermission([Roles.ADMIN, Roles.DOCTOR, Roles.PATIENT]),
+  wrapRequestHandler(getBillController)
+)
 
 /**
  * Description: get bills

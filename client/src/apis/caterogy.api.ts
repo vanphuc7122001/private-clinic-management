@@ -8,6 +8,15 @@ const caterogyApi = {
   },
   createCategory(name: string) {
     return http.post<CreateCaterogySuccess>(`${path.caterogy}`, { name })
+  },
+  updateCategory({ name, id }: { name: string; id: string }) {
+    return http.put<CreateCaterogySuccess>(`${path.caterogy}${id}`, { name })
+  },
+  deleteCaterogy(id: string) {
+    return http.delete<{ message: string }>(`${path.caterogy}/${id}`)
+  },
+  getCaterogy(id: string) {
+    return http.get<CreateCaterogySuccess>(`${path.caterogy}/${id}`)
   }
 }
 

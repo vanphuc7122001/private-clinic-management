@@ -3,6 +3,7 @@ interface ModalProps {
   isOpen: boolean
   children: React.ReactNode
   title: string
+  id?: string
 }
 
 export default function Modal(props: ModalProps) {

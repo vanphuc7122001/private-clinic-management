@@ -7,7 +7,7 @@ import {
   getNewsController,
   updateNewsController
 } from '~/controllers/news.controllers'
-import { checkPermission, paginationValidator } from '~/middlewares/common.middlewares'
+import { checkPermission } from '~/middlewares/common.middlewares'
 import { createNewsValidator, getOrDeleteNewsValidator, updateNewsValidator } from '~/middlewares/news.middlewares'
 import { accessTokenValidator } from '~/middlewares/user.middlewares'
 import { wrapRequestHandler } from '~/utils/handlers'
@@ -36,13 +36,7 @@ newsRouters.post(
  * Headers : Bearer <access_token>
  *
  */
-newsRouters.get(
-  '/',
-  accessTokenValidator,
-  checkPermission([Roles.ADMIN, Roles.PATIENT]),
-  paginationValidator,
-  wrapRequestHandler(getAllNewsController)
-)
+newsRouters.get('/', wrapRequestHandler(getAllNewsController))
 
 /**
  * Description : Get news
@@ -51,13 +45,7 @@ newsRouters.get(
  * Headers : Bearer <access_token>
  * Params : {id: string}
  */
-newsRouters.get(
-  '/:id',
-  accessTokenValidator,
-  checkPermission([Roles.ADMIN, Roles.PATIENT]),
-  getOrDeleteNewsValidator,
-  wrapRequestHandler(getNewsController)
-)
+newsRouters.get('/:id', getOrDeleteNewsValidator, wrapRequestHandler(getNewsController))
 
 /**
  * Description : Delete news

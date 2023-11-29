@@ -35,13 +35,7 @@ doctorRouters.post(
  * Headers: Bearer <access_token>
  * Body:
  */
-doctorRouters.get(
-  '/:id',
-  accessTokenValidator,
-  checkPermission([Roles.ADMIN, Roles.PATIENT, Roles.SUPPORTER, Roles.DOCTOR]),
-  getDoctorValidator,
-  wrapRequestHandler(getDoctorController)
-)
+doctorRouters.get('/:id', getDoctorValidator, wrapRequestHandler(getDoctorController))
 
 /**
  * Description: get doctors
@@ -50,13 +44,7 @@ doctorRouters.get(
  * Headers: Bearer <access_token>
  * Body:
  */
-doctorRouters.get(
-  '/',
-  accessTokenValidator,
-  checkPermission([Roles.ADMIN, Roles.PATIENT, Roles.SUPPORTER]),
-  paginationValidator,
-  wrapRequestHandler(getDoctorsController)
-)
+doctorRouters.get('/', wrapRequestHandler(getDoctorsController))
 
 /**
  * Description: update doctor information

@@ -36,6 +36,16 @@ class CaterogyService {
       }
     })
   }
+
+  async getCaterogy(id: string) {
+    const result = await databaseService.caterogies.findFirst({
+      where: {
+        id
+      }
+    })
+
+    return result
+  }
 }
 
 const caterogyService = new CaterogyService()

@@ -52,6 +52,21 @@ appointmentRouters.post(
 )
 
 /**
+ * Description: get appointments with admin , Roles.SUPPORTER
+ * Path: /
+ * Method: GET
+ * Headers: Bearer <access_token>
+ * Body:
+ */
+appointmentRouters.get(
+  '/admin',
+  accessTokenValidator,
+  checkPermission([Roles.ADMIN, Roles.SUPPORTER]),
+  paginationValidator,
+  wrapRequestHandler(getAppointmentsAdminController)
+)
+
+/**
  * Description: get a appointment
  * Path: /:id
  * Method: GET
@@ -79,21 +94,6 @@ appointmentRouters.get(
   checkPermission([Roles.ADMIN, Roles.PATIENT]),
   paginationValidator,
   wrapRequestHandler(getAppointmentsController)
-)
-
-/**
- * Description: get appointments with admin , Roles.SUPPORTER
- * Path: /
- * Method: GET
- * Headers: Bearer <access_token>
- * Body:
- */
-appointmentRouters.get(
-  '/admin',
-  accessTokenValidator,
-  checkPermission([Roles.ADMIN, Roles.SUPPORTER]),
-  paginationValidator,
-  wrapRequestHandler(getAppointmentsAdminController)
 )
 
 /**

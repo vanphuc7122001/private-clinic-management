@@ -67,6 +67,15 @@ export const createCaterogyValidator = validate(
   )
 )
 
+export const getCaterogyValidator = validate(
+  checkSchema(
+    {
+      id: idSchema
+    },
+    ['params']
+  )
+)
+
 export const updateCaterogyValidator = validate(
   checkSchema(
     {

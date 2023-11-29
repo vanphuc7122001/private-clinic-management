@@ -4,11 +4,13 @@ import {
   createCaterogyController,
   deleteCaterogy,
   getCaterogiesController,
+  getCaterogyController,
   updateCaterogy
 } from '~/controllers/caterogy.controlles'
 import {
   createCaterogyValidator,
   deleteCaterogyValidator,
+  getCaterogyValidator,
   updateCaterogyValidator
 } from '~/middlewares/caterogy.middlewares'
 import { checkPermission } from '~/middlewares/common.middlewares'
@@ -32,6 +34,16 @@ categoryRouters.post(
   createCaterogyValidator,
   wrapRequestHandler(createCaterogyController)
 )
+
+/**
+ * Description : get all categories
+ * Path: /
+ * Method : GET
+ * Headers : Bearer <access_token>
+ * Permissions : Admin
+ */
+
+categoryRouters.get('/:id', accessTokenValidator, getCaterogyValidator, wrapRequestHandler(getCaterogyController))
 
 /**
  * Description : get all categories

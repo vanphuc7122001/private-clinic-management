@@ -20,6 +20,14 @@ export const createCaterogyController = async (
 export const getCaterogiesController = async (req: Request, res: Response, next: NextFunction) => {
   const result = await caterogyService.getCaterogies()
   return res.json({
+    message: CATEROGY_MESSAGES.GET_CATEROGY_SUCCES,
+    result
+  })
+}
+
+export const getCaterogyController = async (req: Request<IdParams>, res: Response, next: NextFunction) => {
+  const result = await caterogyService.getCaterogy(req.params.id)
+  return res.json({
     message: CATEROGY_MESSAGES.GET_ALL_CATEROGIES_SUCCESS,
     result
   })

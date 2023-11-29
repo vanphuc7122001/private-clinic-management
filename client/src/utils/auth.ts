@@ -5,9 +5,13 @@ export const setAccessTokenToLS = (access_token: string) => {
 }
 
 export const getRolesFromAccessToken = (access_token: string) => {
-  const payload = access_token.split('.')[1]
-  const parse = JSON.parse(atob(payload))
-  return parse.role
+  if (access_token) {
+    const payload = access_token.split('.')[1]
+    const parse = JSON.parse(atob(payload))
+    return parse.role
+  }
+
+  return null
 }
 
 export const setRefreshTokenToLS = (refresh_token: string) => {

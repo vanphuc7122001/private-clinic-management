@@ -2,7 +2,6 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState, useMemo } from 'react'
 import caterogyApi from '~/apis/caterogy.api'
 import Modal from '~/components/Modal/Modal'
-import Search from '~/components/Search'
 import HttpStatusCode from '~/constants/httpStatusCodeEnum'
 import { isAxiosError } from '~/utils/utils'
 import { toast } from 'react-toastify'
@@ -11,7 +10,6 @@ import { Link } from 'react-router-dom'
 export default function Caterogy() {
   const queryClient = useQueryClient()
   const [isOpen, setIsOpen] = useState<boolean>(false)
-  const [isUpdate, setIsUpdate] = useState<boolean>(false)
   const [name, setName] = useState<string>('')
   const handleCloseModal = () => {
     setIsOpen(false)

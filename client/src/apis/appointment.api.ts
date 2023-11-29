@@ -11,6 +11,9 @@ const appointmentApi = {
 
   getAppointmentWithUser(body: { page: string | number; limit: string | number }) {
     return http.get<GetAppointmentsUserSuccess>(`${path.appointment}?page=${body.page}&limit=${body.limit}`)
+  },
+  getAppointmentWithAdmin(body: { page: string | number; limit: string | number }) {
+    return http.get<GetAppointmentsUserSuccess>(`${path.appointment}admin?page=${body.page}&limit=${body.limit}`)
   }
 }
 

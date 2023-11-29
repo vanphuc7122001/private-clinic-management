@@ -14,6 +14,8 @@ import ChangePassword from '~/pages/Customer/User/pages/ChangePassword'
 import DoctorDetail from '~/pages/Customer/Doctor/pages/DoctorDetail'
 import NewsDetail from '~/pages/Customer/News/pages/NewsDetail'
 import Caterogy from '~/pages/Dashboard/Caterogy'
+import UpdateCaterogy from '~/pages/Dashboard/Caterogy/pages/UpdateCaterogy'
+import Appointment from '~/pages/Dashboard/Appointment'
 
 export default function useRouteElements() {
   const element = useRoutes([
@@ -32,7 +34,19 @@ export default function useRouteElements() {
       children: [
         {
           path: '',
+          element: <Appointment />
+        },
+        {
+          path: 'category',
           element: <Caterogy />
+        },
+        {
+          path: 'category/:id',
+          element: <UpdateCaterogy />
+        },
+        {
+          path: 'news',
+          element: <News />
         }
       ]
     },

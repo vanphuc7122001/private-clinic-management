@@ -8,7 +8,7 @@ export default function DashboardLayout() {
   const navigate = useNavigate()
   const role = getRolesFromAccessToken(getAccessTokenFromLS())
   useEffect(() => {
-    if (role === 'patient' && !role) {
+    if ((role === 'patient' && !role) || role === null) {
       navigate('/')
     }
   }, [role, navigate])
