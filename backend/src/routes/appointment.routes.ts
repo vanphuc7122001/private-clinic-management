@@ -88,13 +88,7 @@ appointmentRouters.get(
  * Headers: Bearer <access_token>
  * Body:
  */
-appointmentRouters.get(
-  '/',
-  accessTokenValidator,
-  checkPermission([Roles.ADMIN, Roles.PATIENT]),
-  paginationValidator,
-  wrapRequestHandler(getAppointmentsController)
-)
+appointmentRouters.get('/', accessTokenValidator, paginationValidator, wrapRequestHandler(getAppointmentsController))
 
 /**
  * Description: update appointment

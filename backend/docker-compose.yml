@@ -1,0 +1,6 @@
+version: '3'
+services:
+  twitter:
+    image: dev/clinic:v0
+    ports:
+      - '4000:4000'
