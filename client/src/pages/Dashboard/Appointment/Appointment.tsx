@@ -7,7 +7,7 @@ import { isAxiosError } from '~/utils/utils'
 import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
 
-export default function Caterogy() {
+export default function Appointment() {
   const queryClient = useQueryClient()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [name, setName] = useState<string>('')

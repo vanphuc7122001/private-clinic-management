@@ -1,7 +1,6 @@
 /** @type {import('tailwindcss').Config} */
-import tailwindElement from 'tw-elements/dist/plugin.cjs'
 export default {
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}', './node_modules/tw-elements/dist/js/**/*.js'],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       fontFamily: {
@@ -9,5 +8,5 @@ export default {
       }
     }
   },
-  plugins: [tailwindElement]
+  plugins: []
 }

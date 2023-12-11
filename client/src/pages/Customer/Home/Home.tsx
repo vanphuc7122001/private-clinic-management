@@ -124,9 +124,7 @@ export default function Home() {
                   <p className='desc work-item__desc line-clamp'>
                     Tìm kiếm bác sĩ theo trình độ học vấn, bằng cấp hoặc kinh nghiệm-liên hệ để yêu cầu.
                   </p>
-                  <a href='#!' className='work-item__more'>
-                    Learn more
-                  </a>
+                  <p className='work-item__more'>Learn more</p>
                 </section>
               </Link>
               {/* Work item 2  */}
@@ -137,9 +135,7 @@ export default function Home() {
                   <p className='desc work-item__desc line-clamp'>
                     Tìm kiếm bác sĩ theo trình độ học vấn, bằng cấp hoặc kinh nghiệm-liên hệ để yêu cầu.
                   </p>
-                  <a href='#!' className='work-item__more'>
-                    Learn more
-                  </a>
+                  <p className='work-item__more'>Learn more</p>
                 </section>
               </Link>
               {/* Work item 3  */}
@@ -152,9 +148,7 @@ export default function Home() {
                     chuyên ngành. Đừng ngần ngại liên hệ để có thêm thông tin chi tiết hoặc yêu cầu các thông tin cần
                     thiết.
                   </p>
-                  <a href='#!' className='work-item__more'>
-                    Learn more
-                  </a>
+                  <p className='work-item__more'>Learn more</p>
                 </section>
               </Link>
             </div>
@@ -171,17 +165,18 @@ export default function Home() {
             </header>
             <div className='member__list gap-5'>
               {/* Item 1  */}
-              {doctorsQuery.data?.data.result.doctors.map((doctor) => (
-                <Link key={doctor.doctor_id} to={`/doctors/${doctor.doctor_id}`}>
-                  <section className='member-item'>
-                    <figure className='member-item__img'>
-                      <img className='member-item__thumb' src={doctor.doctor.avatar || member1} />
-                    </figure>
-                    <h3 className='member-item__name'>{doctor.doctor.name}</h3>
-                    <p className='desc member-item__title'>{doctor.education}</p>
-                  </section>
-                </Link>
-              ))}
+              {doctorsQuery.data &&
+                doctorsQuery.data?.data.result.doctors.map((doctor) => (
+                  <Link key={doctor.doctor_id} to={`/doctors/${doctor.doctor_id}`}>
+                    <section className='member-item'>
+                      <figure className='member-item__img'>
+                        <img className='member-item__thumb' src={doctor.doctor.avatar || member1} />
+                      </figure>
+                      <h3 className='member-item__name'>{doctor.doctor.name}</h3>
+                      <p className='desc member-item__title'>{doctor.education}</p>
+                    </section>
+                  </Link>
+                ))}
             </div>
             <div className='member__btn'>
               <Link to='/doctors' className='btn'>
@@ -201,22 +196,21 @@ export default function Home() {
                 </Link>
               </section>
               <div className='new__list'>
-                {newsQuery.data?.data.result.news.map((item) => (
-                  <Link key={item.id} to={`/news${item.id}`}>
-                    <article className='new-item'>
-                      <figure className='new-item__img'>
-                        <img className='new-item__thumb' src={new1} />
-                      </figure>
-                      <section className='new-item__body'>
-                        <h3 className='new-item__heading heading'>{item.title}</h3>
-                        <p className='desc new-item__desc line-clamp'>{item.description}</p>
-                        <a href='#!' className='new-item_more'>
-                          Learn more
-                        </a>
-                      </section>
-                    </article>
-                  </Link>
-                ))}
+                {newsQuery.data &&
+                  newsQuery.data?.data.result.news.map((item) => (
+                    <Link key={item.id} to={`/news${item.id}`}>
+                      <article className='new-item'>
+                        <figure className='new-item__img'>
+                          <img className='new-item__thumb' src={new1} />
+                        </figure>
+                        <section className='new-item__body'>
+                          <h3 className='new-item__heading heading'>{item.title}</h3>
+                          <p className='desc new-item__desc line-clamp'>{item.description}</p>
+                          <p className='new-item_more'>Learn more</p>
+                        </section>
+                      </article>
+                    </Link>
+                  ))}
 
                 {/* Item 2 */}
               </div>

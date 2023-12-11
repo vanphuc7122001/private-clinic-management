@@ -2,7 +2,6 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState, useMemo } from 'react'
 import caterogyApi from '~/apis/caterogy.api'
 import Modal from '~/components/Modal/Modal'
-import Search from '~/components/Search'
 import HttpStatusCode from '~/constants/httpStatusCodeEnum'
 import { isAxiosError } from '~/utils/utils'
 import { toast } from 'react-toastify'
@@ -11,14 +10,20 @@ import { Link } from 'react-router-dom'
 export default function Caterogy() {
   const queryClient = useQueryClient()
   const [isOpen, setIsOpen] = useState<boolean>(false)
-  const [isUpdate, setIsUpdate] = useState<boolean>(false)
+  const [isOpenUpdate, setIsOpenUpdate] = useState<boolean>(false)
   const [name, setName] = useState<string>('')
   const handleCloseModal = () => {
     setIsOpen(false)
+    setIsOpenUpdate(false)
   }
 
   const handleOpenModal = () => {
     setIsOpen(true)
+  }
+
+  const handleOpenModalUpdate = (name: string) => {
+    setName(name)
+    setIsOpenUpdate(true)
   }
 
   const createCaterogyMutation = useMutation({
@@ -58,7 +63,13 @@ export default function Caterogy() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    createCaterogyMutation.mutate(name)
+    if (isOpen) {
+      return createCaterogyMutation.mutate(name)
+    }
+
+    if (isOpenUpdate) {
+      console.log(name)
+    }
   }
 
   return (
@@ -96,6 +107,39 @@ export default function Caterogy() {
             </button>
           </form>
         </Modal>
+        <Modal isOpen={isOpenUpdate} handleCloseModal={handleCloseModal} title='Thêm danh mục bài viết'>
+          <form className='max-w-md mx-auto' onSubmit={handleSubmit}>
+            <div className='relative z-0 w-full mb-5 group'>
+              <input
+                type='text'
+                name='name'
+                value={name}
+                id='name'
+                className='block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer'
+                placeholder=' '
+                required
+                onChange={(event) => setName(event.target.value)}
+              />
+              <label
+                htmlFor='name'
+                className='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'
+              >
+                Tên danh mục
+              </label>
+              {errorForm?.name && (
+                <>
+                  <span className='text-[12px] text-red-500'>{errorForm.name}</span>
+                </>
+              )}
+            </div>
+            <button
+              type='submit'
+              className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
+            >
+              Sửa
+            </button>
+          </form>
+        </Modal>
         <div className='flex justify-between'>
           <button
             type='button'
@@ -110,9 +154,6 @@ export default function Caterogy() {
             <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
               <tr>
                 <th scope='col' className='px-6 py-3'>
-                  Id
-                </th>
-                <th scope='col' className='px-6 py-3'>
                   Tên
                 </th>
                 <th scope='col' className='px-6 py-3'>
@@ -124,18 +165,15 @@ export default function Caterogy() {
               {caterogyQuery.data &&
                 caterogyQuery.data.data.result.map((element) => (
                   <tr key={element.id} className='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>
-                    <th scope='row' className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
-                      {element.id}
-                    </th>
                     <td className='px-6 py-4'>{element.name}</td>
                     <td className=''>
-                      <Link
-                        to={`/dashboard/category/${element.id}`}
+                      <button
                         type='button'
+                        onClick={(event) => handleOpenModalUpdate(element.name)}
                         className='focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-1 me-2 mb-2 dark:focus:ring-yellow-900'
                       >
                         Sửa
-                      </Link>
+                      </button>
                       <button
                         type='button'
                         onClick={(event) => deleteCategoryMutation.mutate(element.id)}
@@ -146,6 +184,9 @@ export default function Caterogy() {
                     </td>
                   </tr>
                 ))}
+              {caterogyQuery.data && caterogyQuery.data.data.result.length < 1 && (
+                <p className='text-center'>Không có bảng ghi nào</p>
+              )}
             </tbody>
           </table>
         </div>

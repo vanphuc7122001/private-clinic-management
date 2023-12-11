@@ -7,7 +7,7 @@ import HttpStatusCode from '~/constants/httpStatusCodeEnum'
 import { toast } from 'react-toastify'
 import { isAxiosExpiredTokenError, isAxiosUnauthorizedError } from './utils'
 import { ErrorResponse } from 'react-router-dom'
-import path from '~/constants/path'
+import { pathApi } from '~/constants/path'
 
 class Http {
   private instance: AxiosInstance
@@ -112,7 +112,7 @@ class Http {
 
   private handleRefreshToken() {
     return this.instance
-      .post<AuthResponse>(`${path.user}/${URL_REFRESH_TOKEN}`, {
+      .post<AuthResponse>(`${pathApi.user}/${URL_REFRESH_TOKEN}`, {
         refresh_token: this.refreshToken
       })
       .then((res) => {

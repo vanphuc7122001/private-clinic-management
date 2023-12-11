@@ -1,4 +1,4 @@
-const path = {
+export const pathApi = {
   user: 'users/',
   doctor: 'doctors/',
   new: 'news/',
@@ -6,4 +6,13 @@ const path = {
   caterogy: 'caterogies/'
 } as const
 
-export default path
+export const pathRoute = {
+  login: '/login',
+  signup: '/signup',
+  home: '/',
+  news: '/news',
+  doctor: '/doctors',
+  newsDetail: '/news/:id',
+  doctorDetail: '/doctors/:id',
+  user: '/users'
+} as const

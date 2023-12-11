@@ -30,7 +30,7 @@ export default function HeaderHome() {
                 </>
               )}
               {isAuthenticated && (
-                <Link to={'users'} className='text-white mr-[210px] flex items-center'>
+                <Link to={'/users'} className='text-white mr-[210px] flex items-center'>
                   <FaRegCircleUser />
                 </Link>
               )}

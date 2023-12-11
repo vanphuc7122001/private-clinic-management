@@ -2,20 +2,17 @@
 import './style.scss'
 import HeaderHome from '~/components/Header/HeaderHome'
 import FooterHome from '~/components/Footer/FooterHome/FooterHome'
-import { Outlet } from 'react-router-dom'
 
-export default function CustomerLayOut() {
+export default function CustomerLayOut({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <body id='home'>
+      <div id='home'>
         <div>
           <HeaderHome />
-          {/* Hero */}
-
-          <Outlet />
+          {children}
           <FooterHome />
         </div>
-      </body>
+      </div>
     </>
   )
 }

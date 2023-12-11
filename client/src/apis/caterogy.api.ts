@@ -1,22 +1,22 @@
-import path from '~/constants/path'
+import { pathApi } from '~/constants/path'
 import { CreateCaterogySuccess, GetCaterogiesSuccess } from '~/types/caterogy.api.type'
 import http from '~/utils/http'
 
 const caterogyApi = {
   getCaterogies() {
-    return http.get<GetCaterogiesSuccess>(`${path.caterogy}`)
+    return http.get<GetCaterogiesSuccess>(`${pathApi.caterogy}`)
   },
   createCategory(name: string) {
-    return http.post<CreateCaterogySuccess>(`${path.caterogy}`, { name })
+    return http.post<CreateCaterogySuccess>(`${pathApi.caterogy}`, { name })
   },
   updateCategory({ name, id }: { name: string; id: string }) {
-    return http.put<CreateCaterogySuccess>(`${path.caterogy}${id}`, { name })
+    return http.put<CreateCaterogySuccess>(`${pathApi.caterogy}${id}`, { name })
   },
   deleteCaterogy(id: string) {
-    return http.delete<{ message: string }>(`${path.caterogy}/${id}`)
+    return http.delete<{ message: string }>(`${pathApi.caterogy}/${id}`)
   },
   getCaterogy(id: string) {
-    return http.get<CreateCaterogySuccess>(`${path.caterogy}/${id}`)
+    return http.get<CreateCaterogySuccess>(`${pathApi.caterogy}/${id}`)
   }
 }
 
